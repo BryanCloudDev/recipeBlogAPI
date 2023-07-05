@@ -4,9 +4,10 @@ import {
   ManyToOne,
   CreateDateColumn,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  OneToMany
 } from 'typeorm'
-import { User } from './'
+import { Step, User } from './'
 
 @Entity()
 export default class Recipe {
@@ -27,6 +28,9 @@ export default class Recipe {
 
   @ManyToOne(() => User, user => user.recipes)
   user: User
+
+  @OneToMany(() => Step, step => step.recipe)
+  step: Step[]
 
   @CreateDateColumn({ type: 'timestamp' })
   createdOn: Date
