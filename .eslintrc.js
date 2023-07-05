@@ -3,7 +3,10 @@ module.exports = {
     es2021: true,
     node: true
   },
-  extends: 'standard-with-typescript',
+  extends: [
+    'standard-with-typescript',
+    'eslint-config-prettier'
+  ],
   overrides: [
     {
       env: {
@@ -20,5 +23,7 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json'
   },
-  rules: {}
+  rules: {
+    // "no-console": "error"
+  }
 }
