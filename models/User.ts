@@ -4,9 +4,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany
+  OneToMany,
+  ManyToOne
 } from 'typeorm'
-import { Recipe } from './'
+import { Recipe, Role } from './'
 
 @Entity()
 export class User {
@@ -33,6 +34,9 @@ export class User {
 
   @OneToMany(() => Recipe, recipe => recipe.user)
   recipes: Recipe[]
+
+  @ManyToOne(() => Role, role => role.user)
+  role: Role
 
   @CreateDateColumn({ type: 'timestamp' })
   createdOn: Date
