@@ -3,8 +3,10 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  OneToMany
 } from 'typeorm'
+import { Recipe } from './'
 
 @Entity()
 export class User {
@@ -18,7 +20,7 @@ export class User {
   lastName: string
 
   @Column()
-  age: number
+  birthDate: Date
 
   @Column({ unique: true })
   email: string
@@ -28,6 +30,9 @@ export class User {
 
   @Column({ default: true })
   isActive: boolean
+
+  @OneToMany(() => Recipe, recipe => recipe.user)
+  recipes: Recipe[]
 
   @CreateDateColumn({ type: 'timestamp' })
   createdOn: Date
