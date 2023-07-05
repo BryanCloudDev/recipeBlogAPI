@@ -12,5 +12,8 @@
     "blogRecipe"
   ],
   "author": "Bryan Portillo",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "typeorm": "^0.3.17"
+  }
 }
