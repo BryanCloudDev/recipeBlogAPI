@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
   OneToMany
 } from 'typeorm'
-import { Step, User } from './'
+import { Ingredient, Step, User } from './'
 
 @Entity()
 export default class Recipe {
@@ -31,6 +31,9 @@ export default class Recipe {
 
   @OneToMany(() => Step, step => step.recipe)
   step: Step[]
+
+  @OneToMany(() => Ingredient, ingredient => ingredient.recipe)
+  ingredient: Ingredient[]
 
   @CreateDateColumn({ type: 'timestamp' })
   createdOn: Date
