@@ -4,6 +4,11 @@
   "description": "This is an API for a recipe blog",
   "main": "index.js",
   "scripts": {
+    "build": "npx tsc",
+    "dev": "concurrently \"npx tsc -w\" \"nodemon -q dist/index.js\"",
+    "lint": "npx eslint .",
+    "lint:fix": "npx eslint . --fix",
+    "start": "node dist/index.js",
     "test": "test"
   },
   "keywords": [
