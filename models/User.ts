@@ -10,7 +10,7 @@ import {
 import { Recipe, Role } from './'
 
 @Entity()
-export class User {
+export default class User {
   @PrimaryGeneratedColumn()
   id: number
 

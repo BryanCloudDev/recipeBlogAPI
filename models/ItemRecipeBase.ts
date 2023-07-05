@@ -1,15 +1,11 @@
 import {
-  Entity,
   Column,
-  ManyToOne,
   CreateDateColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
-import { User } from './'
 
-@Entity()
-export default class Recipe {
+export default class ItemRecipeBase {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -17,16 +13,7 @@ export default class Recipe {
   title: string
 
   @Column()
-  description: string
-
-  @Column({ default: true })
-  isActive: boolean
-
-  @Column('mediumblob')
-  photo: Buffer
-
-  @ManyToOne(() => User, user => user.recipes)
-  user: User
+  order: number
 
   @CreateDateColumn({ type: 'timestamp' })
   createdOn: Date

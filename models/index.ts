@@ -1,5 +1,6 @@
-import { Recipe } from './Recipe'
-import { Role } from './Role'
-import { User } from './User'
+import ItemRecipeBase from './ItemRecipeBase'
+import Recipe from './Recipe'
+import Role from './Role'
+import User from './User'
 
-export { User, Recipe, Role }
+export { ItemRecipeBase, User, Recipe, Role }

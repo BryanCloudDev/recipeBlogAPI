@@ -6,10 +6,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
-import { User } from './User'
+import { User } from './'
 
 @Entity()
-export class Role {
+export default class Role {
   @PrimaryGeneratedColumn()
   id: number
 
