@@ -1,0 +1,16 @@
+{
+  "name": "recipeblog",
+  "version": "0.0.1",
+  "description": "This is an API for a recipe blog",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "nodeJS",
+    "TS",
+    "blogRecipe"
+  ],
+  "author": "Bryan Portillo",
+  "license": "MIT"
+}
