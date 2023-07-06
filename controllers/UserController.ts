@@ -1,10 +1,10 @@
 import { type Request, type Response } from 'express'
 import { type User } from '../models'
-import { type UserService } from '../services'
+import { UserService } from '../services'
 import { Status, type ICustomRequest, type IUserRequest } from '../dto'
 
 export default class UserController {
-  constructor(readonly userService: UserService) {}
+  constructor(readonly userService = new UserService()) {}
 
   createUser = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
@@ -57,7 +57,7 @@ export default class UserController {
 
   getUserProfile = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
-      const { role, ...user }: User = req.user as User
+      const { role, ...user }: User = req.user
       const { id } = role
 
       return res.status(200).json({
