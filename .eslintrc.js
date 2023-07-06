@@ -24,6 +24,6 @@ module.exports = {
     project: './tsconfig.json'
   },
   rules: {
-    // "no-console": "error"
+    "@typescript-eslint/no-useless-constructor": "off"
   }
 }
