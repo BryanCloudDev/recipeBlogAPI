@@ -37,10 +37,7 @@ const deleteUser = async (req: Request, res: Response): Promise<Response> => {
   }
 }
 
-const getAllUsers = async (
-  req: ICustomRequest,
-  res: Response
-): Promise<Response> => {
+const getAllUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
     const users = await userRepository.find()
     return res.status(200).json(users)
