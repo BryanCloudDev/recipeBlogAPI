@@ -17,4 +17,13 @@ const createUserInstanceService = async (
   }
 }
 
-export { createUserInstanceService }
+const createUserService = async (user: User): Promise<User> => {
+  try {
+    const createdUser = await userRepository.save(user)
+    return createdUser
+  } catch (error: any) {
+    throw new Error('Error in create user service')
+  }
+}
+
+export { createUserInstanceService, createUserService }
