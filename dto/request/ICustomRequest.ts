@@ -1,6 +1,7 @@
 import { type Request } from 'express'
-import { type Role } from '../../models'
+import { type User, type Role } from '../../models'
 
 export default interface ICustomRequest extends Request {
   role: Role
+  user: User
 }
