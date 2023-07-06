@@ -33,6 +33,9 @@ export default class User {
   @Column({ default: Status.ACTIVE })
   status: number
 
+  @Column({ nullable: true })
+  lastLogin: Date
+
   @OneToMany(() => Recipe, recipe => recipe.user)
   recipes: Recipe[]
 
