@@ -8,6 +8,7 @@ import {
   ManyToOne
 } from 'typeorm'
 import { Recipe, Role } from './'
+import { Status } from '../dto'
 
 @Entity()
 export default class User {
@@ -29,8 +30,8 @@ export default class User {
   @Column()
   password: string
 
-  @Column({ default: true })
-  isActive: boolean
+  @Column({ default: Status.ACTIVE })
+  status: number
 
   @OneToMany(() => Recipe, recipe => recipe.user)
   recipes: Recipe[]
