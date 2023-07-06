@@ -1,13 +1,13 @@
 import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 import { type IUserRequest } from '../dto'
-import { type Role, type User } from '../models'
-import { type UserRepository } from '../repositories'
-import type AuthenticationService from './AuthenticationService'
+import { type User, type Role } from '../models'
+import AuthenticationService from './AuthenticationService'
+import { userRepository as repository } from '../repositories'
 
 export default class UserService {
   constructor(
-    readonly authenticationService: AuthenticationService,
-    readonly userRepository: UserRepository
+    readonly authenticationService = new AuthenticationService(),
+    readonly userRepository = repository
   ) {}
 
   createUserInstanceService = async (userRequest: IUserRequest, role: Role): Promise<User> => {
