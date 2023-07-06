@@ -1,4 +1,4 @@
-import { encrypt } from './auth'
-import { createUserInstanceService, createUserService } from './user'
+import AuthenticationService from './AuthenticationService'
+import UserService from './UserService'
 
-export { createUserInstanceService, createUserService, encrypt }
+export { AuthenticationService, UserService }
