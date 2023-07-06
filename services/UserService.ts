@@ -45,4 +45,13 @@ export default class UserService {
       throw new Error('Error in update user by id service')
     }
   }
+
+  getAllUsers = async (): Promise<User[]> => {
+    try {
+      const users = await this.userRepository.find()
+      return users
+    } catch (error: any) {
+      throw new Error('Error in get all users service')
+    }
+  }
 }

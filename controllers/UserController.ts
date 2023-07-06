@@ -1,25 +1,19 @@
 import { type Request, type Response } from 'express'
 import { type User } from '../models'
+import { type UserService } from '../services'
 import { Status, type ICustomRequest, type IUserRequest } from '../dto'
-import {
-  createUserInstanceService,
-  createUserService,
-  getUserbyIdService
-} from '../services'
-import { userRepository } from '../repositories'
 
 export default class UserController {
-  createUser = async (
-    req: ICustomRequest,
-    res: Response
-  ): Promise<Response> => {
+  constructor(readonly userService: UserService) {}
+
+  createUser = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
       const { ...userRequest }: IUserRequest = req.body
 
       const role = req.role
 
-      const userInstance = await createUserInstanceService(userRequest, role)
-      await createUserService(userInstance)
+      const userInstance = await this.userService.createUserInstanceService(userRequest, role)
+      await this.userService.createUserService(userInstance)
 
       return res.status(201).json({
         message: 'Successfully created'
@@ -33,9 +27,7 @@ export default class UserController {
     try {
       const id = parseInt(req.params.id)
 
-      await userRepository.update(id, {
-        status: Status.INACTIVE
-      })
+      await this.userService.updateUserByIdService(id, { status: Status.INACTIVE })
 
       return res.status(204).json({})
     } catch (error: any) {
@@ -45,7 +37,7 @@ export default class UserController {
 
   getAllUsers = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const users = await userRepository.find()
+      const users = await this.userService.getAllUsers()
       return res.status(200).json(users)
     } catch (error: any) {
       return res.status(500).json(error.message)
