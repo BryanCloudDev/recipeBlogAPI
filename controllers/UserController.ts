@@ -47,7 +47,7 @@ export default class UserController {
   getUserById = async (req: Request, res: Response): Promise<Response> => {
     try {
       const id = parseInt(req.params.id)
-      const user = await getUserbyIdService(id)
+      const user = await this.userService.getUserbyIdService(id)
 
       return res.status(200).json(user)
     } catch (error: any) {
@@ -55,7 +55,7 @@ export default class UserController {
     }
   }
 
-  getUserProfile = async (req: Request, res: Response): Promise<Response> => {
+  getUserProfile = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
       const { role, ...user }: User = req.user as User
       const { id } = role
