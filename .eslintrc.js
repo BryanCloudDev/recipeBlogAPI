@@ -24,6 +24,7 @@ module.exports = {
     project: './tsconfig.json'
   },
   rules: {
-    "@typescript-eslint/no-useless-constructor": "off"
+    "@typescript-eslint/no-useless-constructor": "off",
+    "@typescript-eslint/no-misused-promises": "off"
   }
 }
