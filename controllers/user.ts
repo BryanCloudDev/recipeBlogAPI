@@ -1,6 +1,7 @@
-import { type Response } from 'express'
-import { type ICustomRequest, type IUserRequest } from '../dto'
+import { type Request, type Response } from 'express'
+import { Status, type ICustomRequest, type IUserRequest } from '../dto'
 import { createUserInstanceService, createUserService } from '../services'
+import { userRepository } from '../repositories'
 
 const createUser = async (
   req: ICustomRequest,
@@ -22,4 +23,30 @@ const createUser = async (
   }
 }
 
-export { createUser }
+const deleteUser = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const id = parseInt(req.params.id)
+
+    await userRepository.update(id, {
+      status: Status.INACTIVE
+    })
+
+    return res.status(204).json({})
+  } catch (error: any) {
+    return res.status(500).json(error.message)
+  }
+}
+
+const getAllUsers = async (
+  req: ICustomRequest,
+  res: Response
+): Promise<Response> => {
+  try {
+    const users = await userRepository.find()
+    return res.status(200).json(users)
+  } catch (error: any) {
+    return res.status(500).json(error.message)
+  }
+}
+
+export { createUser, deleteUser, getAllUsers }
