@@ -47,4 +47,9 @@ export default class User {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedOn: Date
+
+  toJSON(): Omit<this, 'password' | 'updatedOn' | 'toJSON'> {
+    const { password, updatedOn, ...user } = this
+    return user
+  }
 }
