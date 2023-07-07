@@ -1,17 +1,15 @@
-import { type IUserRequest } from '../dto'
+import { type IUserService, type IUserRequest, IAuthenticationService } from '../dto'
 import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
-import { type User, type Role } from '../models'
-import IAuthenticateService from '../dto/auth/IAuthenticationService'
-import type IUserService from '../dto/user/IUserService'
+import { type Role, type User } from '../models'
+import { injectable, inject } from 'inversify'
 import { userRepository } from '../repositories'
-import { inject, injectable } from 'inversify'
 import types from './inversify/types'
 
 @injectable()
 export default class UserService implements IUserService {
   constructor(
     @inject(types.IAuthenticationService)
-    readonly authenticationService: IAuthenticateService
+    readonly authenticationService: IAuthenticationService
   ) {}
 
   createUserInstanceService = async (userRequest: IUserRequest, role: Role): Promise<User> => {

@@ -1,10 +1,8 @@
-import { type Request, type Response } from 'express'
-import type IUserController from '../dto/user/IUserController'
-import IUserService from '../dto/user/IUserService'
-import { Status, type ICustomRequest, type IUserRequest } from '../dto'
+import { type IUserController, IUserService, type ICustomRequest, type IUserRequest } from '../dto'
+import { type Response, type Request } from 'express'
 import { type User } from '../models'
-import { inject, injectable } from 'inversify'
-import types from '../services/inversify/types'
+import { Status, types } from '../services'
+import { injectable, inject } from 'inversify'
 
 @injectable()
 export default class UserController implements IUserController {

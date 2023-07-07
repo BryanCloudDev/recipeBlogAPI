@@ -1,15 +1,12 @@
-import { Container } from 'inversify'
-import type IUserService from '../../dto/user/IUserService'
-import types from './types'
-import UserService from '../UserService'
-import type IAuthenticationService from '../../dto/auth/IAuthenticationService'
-import AuthenticationService from '../AuthenticationService'
-import { UserController } from '../../controllers'
-import type IUserController from '../../dto/user/IUserController'
-import UserRouter from '../../routes/UserRouter'
-import type IUserRouter from '../../dto/user/IUserRouter'
-import { appFactory, portFactory, routeFactory } from '../utils'
 import { type Application, type Router } from 'express'
+import { type IUserService, type IAuthenticationService, type IUserController, type IUserRouter } from '../../dto'
+import { Container } from 'inversify'
+import { UserController } from '../../controllers'
+import { UserRouter } from '../../routes'
+import { appFactory, portFactory, routeFactory } from '../utils'
+import AuthenticationService from '../AuthenticationService'
+import UserService from '../UserService'
+import types from './types'
 
 const container = new Container()
 

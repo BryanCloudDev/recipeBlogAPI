@@ -8,7 +8,7 @@ import {
   ManyToOne
 } from 'typeorm'
 import { Recipe, Role } from './'
-import { Status } from '../dto'
+import { Status } from '../services'
 
 @Entity()
 export default class User {

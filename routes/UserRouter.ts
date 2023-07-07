@@ -1,8 +1,7 @@
-import IUserController from '../dto/user/IUserController'
-import { inject, injectable } from 'inversify'
-import types from '../services/inversify/types'
+import { type IRouterBase, IUserController } from '../dto'
 import { type Router } from 'express'
-import type IRouterBase from '../dto/IRouterBase'
+import { injectable, inject } from 'inversify'
+import { types } from '../services'
 
 @injectable()
 export default class UserRouter implements IRouterBase {

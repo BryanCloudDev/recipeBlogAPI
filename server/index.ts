@@ -1,10 +1,9 @@
-import 'dotenv/config'
-import { makeDBConnection } from '../database'
 import cors from 'cors'
 import express, { type Application, type Router } from 'express'
-import { inject, injectable } from 'inversify'
-import types from '../services/inversify/types'
-import IUserRouter from '../dto/user/IUserRouter'
+import { IUserRouter } from '../dto'
+import { injectable, inject } from 'inversify'
+import { makeDBConnection } from '../database'
+import { types } from '../services'
 
 @injectable()
 export default class Server {
@@ -24,11 +23,11 @@ export default class Server {
     readonly routeFactory: () => Router
   ) {
     void this.connectToDB()
+    this.middleware()
+    this.routes()
     this._app = appFactory()
     this._port = portFactory()
     this._apiRouter = routeFactory()
-    this.middleware()
-    this.routes()
   }
 
   private async connectToDB(): Promise<void> {
