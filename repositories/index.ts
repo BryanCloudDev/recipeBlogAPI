@@ -1,11 +1,10 @@
 import { AppDataSource } from '../database'
-import { User } from '../models'
-import IngredientRepository from './IngredientRepository'
-import RecipeRepository from './RecipeRepository'
-import RoleRepository from './RoleRepository'
-import StepRepository from './StepRepository'
-import UserRepository from './UserRepository'
+import { Ingredient, Recipe, Role, Step, User } from '../models'
 
+const ingredientRepository = AppDataSource.getRepository(Ingredient)
+const recipeRepository = AppDataSource.getRepository(Recipe)
+const roleRepository = AppDataSource.getRepository(Role)
+const stepRepository = AppDataSource.getRepository(Step)
 const userRepository = AppDataSource.getRepository(User)
 
-export { IngredientRepository, RecipeRepository, RoleRepository, StepRepository, UserRepository, userRepository }
+export { ingredientRepository, recipeRepository, roleRepository, stepRepository, userRepository }

@@ -1,9 +1,9 @@
 import { type Request, type Response } from 'express'
-import { type User } from '../models'
 import type IUserController from '../dto/user/IUserController'
 import type IUserService from '../dto/user/IUserService'
 import { Status, type ICustomRequest, type IUserRequest } from '../dto'
 import { UserService } from '../services'
+import { type User } from '../models'
 
 export default class UserController implements IUserController {
   constructor(readonly userService: IUserService = new UserService()) {}
