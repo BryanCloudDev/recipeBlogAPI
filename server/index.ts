@@ -1,18 +1,32 @@
 import 'dotenv/config'
 import { makeDBConnection } from '../database'
-import RouterBase from '../routes/RouterBase'
 import cors from 'cors'
-import express, { Router } from 'express'
-import UserRouter from '../routes/UserRouter'
+import express, { type Application, type Router } from 'express'
+import { inject, injectable } from 'inversify'
+import types from '../services/inversify/types'
+import IUserRouter from '../dto/user/IUserRouter'
 
-export default class Server extends RouterBase {
+@injectable()
+export default class Server {
+  readonly _apiRoute = '/api'
+  private readonly _app: Application
+  private readonly _port: number
+  private readonly _apiRouter: Router
+
   constructor(
-    readonly _app = express(),
-    readonly _port = Number(process.env.PORT),
-    readonly userRouter = new UserRouter()
+    @inject(types.IUserRouter)
+    readonly userRouter: IUserRouter,
+    @inject(types.AppFactory)
+    readonly appFactory: () => Application,
+    @inject(types.PortFactory)
+    readonly portFactory: () => number,
+    @inject(types.RouteFactory)
+    readonly routeFactory: () => Router
   ) {
-    super(Router(), '/api')
     void this.connectToDB()
+    this._app = appFactory()
+    this._port = portFactory()
+    this._apiRouter = routeFactory()
     this.middleware()
     this.routes()
   }
@@ -31,10 +45,10 @@ export default class Server extends RouterBase {
 
   private routes(): void {
     // App routers
-    this.getRouter.use(this.userRouter.route, this.userRouter.getRouter)
+    this._apiRouter.use(this.userRouter.route, this.userRouter.router)
 
     // API router
-    this._app.use(this.route, this.getRouter)
+    this._app.use(this._apiRoute, this._apiRouter)
   }
 
   public listener(): void {

@@ -1,12 +1,17 @@
 import { type Request, type Response } from 'express'
 import type IUserController from '../dto/user/IUserController'
-import type IUserService from '../dto/user/IUserService'
+import IUserService from '../dto/user/IUserService'
 import { Status, type ICustomRequest, type IUserRequest } from '../dto'
-import { UserService } from '../services'
 import { type User } from '../models'
+import { inject, injectable } from 'inversify'
+import types from '../services/inversify/types'
 
+@injectable()
 export default class UserController implements IUserController {
-  constructor(readonly userService: IUserService = new UserService()) {}
+  constructor(
+    @inject(types.IUserService)
+    readonly userService: IUserService
+  ) {}
 
   createUser = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {

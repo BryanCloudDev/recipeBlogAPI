@@ -1,11 +1,30 @@
-import RouterBase from './RouterBase'
-import type IUserController from '../dto/user/IUserController'
-import { Router } from 'express'
-import { UserController } from '../controllers'
+import IUserController from '../dto/user/IUserController'
+import { inject, injectable } from 'inversify'
+import types from '../services/inversify/types'
+import { type Router } from 'express'
+import type IRouterBase from '../dto/IRouterBase'
 
-export default class UserRouter extends RouterBase {
-  constructor(readonly userController: IUserController = new UserController()) {
-    super(Router(), '/user')
-    this.post('/', this.userController.createUser)
+@injectable()
+export default class UserRouter implements IRouterBase {
+  readonly route = '/users'
+  private readonly _router: Router
+
+  constructor(
+    @inject(types.IUserController)
+    readonly userController: IUserController,
+    @inject(types.RouteFactory)
+    readonly routeFactory: () => Router
+  ) {
+    this._router = routeFactory()
+    this.initializeRoutes()
+  }
+
+  initializeRoutes(): void {
+    this._router.post('/', this.userController.createUser)
+    this._router.get('/', this.userController.getAllUsers)
+  }
+
+  public get router(): Router {
+    return this._router
   }
 }

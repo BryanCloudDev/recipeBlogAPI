@@ -1,5 +1,5 @@
 import { injectable } from 'inversify'
-import type IAuthenticateService from '../dto/auth/IAuthenticateService'
+import type IAuthenticateService from '../dto/auth/IAuthenticationService'
 import bcrypt from 'bcryptjs'
 
 @injectable()
