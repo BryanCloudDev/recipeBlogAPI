@@ -8,7 +8,7 @@ import { UserController } from '../../controllers'
 import type IUserController from '../../dto/user/IUserController'
 import UserRouter from '../../routes/UserRouter'
 import type IUserRouter from '../../dto/user/IUserRouter'
-import { appFactory, portFactory, routeFactory } from '../ServerService'
+import { appFactory, portFactory, routeFactory } from '../utils'
 import { type Application, type Router } from 'express'
 
 const container = new Container()
