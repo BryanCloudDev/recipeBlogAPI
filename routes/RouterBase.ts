@@ -1,21 +1,25 @@
-import { Router } from 'express'
+import { type Router } from 'express'
+import type IRouterBase from '../dto/IRouterBase'
 
-export default abstract class RouterBase {
-  constructor(readonly router: Router = Router()) {}
+export default class RouterBase implements IRouterBase {
+  constructor(
+    readonly router: Router,
+    readonly route: string
+  ) {}
 
-  protected get(path: string, ...handler: any): Router {
+  get(path: string, ...handler: any): Router {
     return this.router.get(path, ...handler)
   }
 
-  protected post(path: string, ...handler: any): Router {
+  post(path: string, ...handler: any): Router {
     return this.router.post(path, ...handler)
   }
 
-  protected delete(path: string, ...handler: any): Router {
+  delete(path: string, ...handler: any): Router {
     return this.router.delete(path, ...handler)
   }
 
-  protected patch(path: string, ...handler: any): Router {
+  patch(path: string, ...handler: any): Router {
     return this.router.patch(path, ...handler)
   }
 

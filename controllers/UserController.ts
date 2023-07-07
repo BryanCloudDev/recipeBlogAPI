@@ -1,10 +1,12 @@
 import { type Request, type Response } from 'express'
 import { type User } from '../models'
-import { UserService } from '../services'
+import type IUserController from '../dto/user/IUserController'
+import type IUserService from '../dto/user/IUserService'
 import { Status, type ICustomRequest, type IUserRequest } from '../dto'
+import { UserService } from '../services'
 
-export default class UserController {
-  constructor(readonly userService = new UserService()) {}
+export default class UserController implements IUserController {
+  constructor(readonly userService: IUserService = new UserService()) {}
 
   createUser = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {

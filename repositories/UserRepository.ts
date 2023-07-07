@@ -1,4 +1,9 @@
-import { type User } from '../models'
-import RepositoryBase from './RepositoryBase'
+import { injectable } from 'inversify'
+import { AppDataSource } from '../database'
+import type IUserRepository from '../dto/user/IUserRepository'
+import { User } from '../models'
 
-export default class UserRepository extends RepositoryBase<User> {}
+@injectable()
+export default class UserRepository implements IUserRepository {
+  user = AppDataSource.getRepository(User)
+}

@@ -1,19 +1,22 @@
-import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 import { type IUserRequest } from '../dto'
+import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 import { type User, type Role } from '../models'
+import type IAuthenticateService from '../dto/auth/IAuthenticateService'
+import type IUserRepository from '../dto/user/IUserRepository'
+import type IUserService from '../dto/user/IUserService'
+import { UserRepository } from '../repositories'
 import AuthenticationService from './AuthenticationService'
-import { userRepository as repository } from '../repositories'
 
-export default class UserService {
+export default class UserService implements IUserService {
   constructor(
-    readonly authenticationService = new AuthenticationService(),
-    readonly userRepository = repository
+    readonly authenticationService: IAuthenticateService = new AuthenticationService(),
+    readonly repository: IUserRepository = new UserRepository()
   ) {}
 
   createUserInstanceService = async (userRequest: IUserRequest, role: Role): Promise<User> => {
     try {
       userRequest.password = await this.authenticationService.encrypt(userRequest.password)
-      const user = this.userRepository.create({ ...userRequest, role })
+      const user = this.repository.user.create({ ...userRequest, role })
       return user
     } catch (error) {
       throw new Error('Error in create user instance service')
@@ -22,7 +25,7 @@ export default class UserService {
 
   createUserService = async (user: User): Promise<User> => {
     try {
-      const createdUser = await this.userRepository.save(user)
+      const createdUser = await this.repository.user.save(user)
       return createdUser
     } catch (error: any) {
       throw new Error('Error in create user service')
@@ -31,7 +34,7 @@ export default class UserService {
 
   getUserbyIdService = async (id: number): Promise<User | null> => {
     try {
-      const user = await this.userRepository.findOne({ where: { id } })
+      const user = await this.repository.user.findOne({ where: { id } })
       return user
     } catch (error: any) {
       throw new Error('Error in get user by id service')
@@ -40,7 +43,7 @@ export default class UserService {
 
   updateUserByIdService = async (id: number, user: QueryDeepPartialEntity<User>): Promise<void> => {
     try {
-      await this.userRepository.update(id, user)
+      await this.repository.user.update(id, user)
     } catch (error: any) {
       throw new Error('Error in update user by id service')
     }
@@ -48,7 +51,7 @@ export default class UserService {
 
   getAllUsers = async (): Promise<User[]> => {
     try {
-      const users = await this.userRepository.find()
+      const users = await this.repository.user.find()
       return users
     } catch (error: any) {
       throw new Error('Error in get all users service')

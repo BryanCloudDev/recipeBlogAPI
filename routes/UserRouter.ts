@@ -1,12 +1,11 @@
-import { UserController } from '../controllers'
 import RouterBase from './RouterBase'
+import type IUserController from '../dto/user/IUserController'
+import { Router } from 'express'
+import { UserController } from '../controllers'
 
 export default class UserRouter extends RouterBase {
-  constructor(
-    private readonly _userController = new UserController(),
-    public readonly _userRoute = '/user'
-  ) {
-    super()
-    this.post('/', this._userController.createUser)
+  constructor(readonly userController: IUserController = new UserController()) {
+    super(Router(), '/user')
+    this.post('/', this.userController.createUser)
   }
 }

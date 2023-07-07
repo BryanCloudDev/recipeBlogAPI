@@ -1,20 +1,17 @@
-import express from 'express'
-import { makeDBConnection } from '../database'
 import 'dotenv/config'
-import cors from 'cors'
+import { makeDBConnection } from '../database'
 import RouterBase from '../routes/RouterBase'
+import cors from 'cors'
+import express, { Router } from 'express'
 import UserRouter from '../routes/UserRouter'
 
 export default class Server extends RouterBase {
-  readonly userRouter: UserRouter
-
   constructor(
     readonly _app = express(),
     readonly _port = Number(process.env.PORT),
-    readonly _apiRoute = '/api'
+    readonly userRouter = new UserRouter()
   ) {
-    super()
-    this.userRouter = new UserRouter()
+    super(Router(), '/api')
     void this.connectToDB()
     this.middleware()
     this.routes()
@@ -33,10 +30,11 @@ export default class Server extends RouterBase {
   }
 
   private routes(): void {
-    // API route
-    this.getRouter.use(this.userRouter._userRoute, this.userRouter.getRouter)
+    // App routers
+    this.getRouter.use(this.userRouter.route, this.userRouter.getRouter)
 
-    this._app.use(this._apiRoute, this.getRouter)
+    // API router
+    this._app.use(this.route, this.getRouter)
   }
 
   public listener(): void {
