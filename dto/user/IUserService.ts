@@ -7,5 +7,5 @@ export default interface IUserService {
   createUserService: (user: User) => Promise<User>
   getUserbyIdService: (id: number) => Promise<User | null>
   updateUserByIdService: (id: number, user: QueryDeepPartialEntity<User>) => Promise<void>
-  getAllUsers: () => Promise<User[]>
+  getAllUsersService: () => Promise<User[]>
 }

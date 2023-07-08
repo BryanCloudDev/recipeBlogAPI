@@ -1,36 +1,31 @@
 import cors from 'cors'
 import express, { type Application, type Router } from 'express'
-import { IUserRouter } from '../dto'
-import { injectable, inject } from 'inversify'
+import { type IUserRouter } from '../dto'
 import { makeDBConnection } from '../database'
-import { types } from '../services'
+import { appFactory, portFactory, routeFactory } from '../services'
+import { UserRouter } from '../routes'
 
-@injectable()
 export default class Server {
-  readonly _apiRoute = '/api'
   private readonly _app: Application
   private readonly _port: number
-  private readonly _apiRouter: Router
+  private readonly _router: Router
+  private readonly route = '/api'
 
   constructor(
-    @inject(types.IUserRouter)
-    readonly userRouter: IUserRouter,
-    @inject(types.AppFactory)
-    readonly appFactory: () => Application,
-    @inject(types.PortFactory)
-    readonly portFactory: () => number,
-    @inject(types.RouteFactory)
-    readonly routeFactory: () => Router
+    readonly userRouter: IUserRouter = new UserRouter(),
+    readonly App: () => Application = appFactory,
+    readonly Port: () => number = portFactory,
+    readonly Router: () => Router = routeFactory
   ) {
     void this.connectToDB()
+    this._app = App()
     this.middleware()
+    this._router = Router()
     this.routes()
-    this._app = appFactory()
-    this._port = portFactory()
-    this._apiRouter = routeFactory()
+    this._port = Port()
   }
 
-  private async connectToDB(): Promise<void> {
+  async connectToDB(): Promise<void> {
     await makeDBConnection()
   }
 
@@ -44,10 +39,10 @@ export default class Server {
 
   private routes(): void {
     // App routers
-    this._apiRouter.use(this.userRouter.route, this.userRouter.router)
+    this._router.use(this.userRouter.route, this.userRouter.router)
 
     // API router
-    this._app.use(this._apiRoute, this._apiRouter)
+    this._app.use(this.route, this._router)
   }
 
   public listener(): void {

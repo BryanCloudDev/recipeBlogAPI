@@ -8,7 +8,7 @@ import {
   ManyToOne
 } from 'typeorm'
 import { Recipe, Role } from './'
-import { Status } from '../services'
+// import { Status } from '../services'
 
 @Entity()
 export default class User {
@@ -30,7 +30,7 @@ export default class User {
   @Column()
   password: string
 
-  @Column({ default: Status.ACTIVE })
+  @Column({ default: 1 })
   status: number
 
   @Column({ nullable: true })

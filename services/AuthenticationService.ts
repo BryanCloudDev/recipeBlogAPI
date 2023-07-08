@@ -1,8 +1,6 @@
-import { injectable } from 'inversify'
 import bcrypt from 'bcryptjs'
 import { type IAuthenticationService } from '../dto'
 
-@injectable()
 export default class AuthenticationService implements IAuthenticationService {
   encrypt = async (text: string): Promise<string> => {
     try {

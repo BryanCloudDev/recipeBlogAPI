@@ -7,6 +7,9 @@
     "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
+    "types": [
+      "reflect-metadata"
+    ],
     "outDir": "./dist",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
