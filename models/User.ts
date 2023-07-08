@@ -8,33 +8,36 @@ import {
   ManyToOne
 } from 'typeorm'
 import { Recipe, Role } from './'
-// import { Status } from '../services'
 
 @Entity()
 export default class User {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column()
+  @Column({ nullable: false })
   firstName: string
 
-  @Column()
+  @Column({ nullable: false })
   lastName: string
 
-  @Column()
+  @Column({ nullable: false })
   birthDate: Date
 
   @Column({ unique: true })
   email: string
 
-  @Column()
+  @Column({ nullable: false })
   password: string
 
+  // 1: Status.ACTIVE, I do not know why typeORM crashes when I add the enum here
   @Column({ default: 1 })
   status: number
 
   @Column({ nullable: true })
   lastLogin: Date
+
+  @Column('mediumblob', { default: null })
+  photo: Buffer
 
   @OneToMany(() => Recipe, recipe => recipe.user)
   recipes: Recipe[]

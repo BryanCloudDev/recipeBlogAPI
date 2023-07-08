@@ -14,16 +14,17 @@ export default class Recipe {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column()
+  @Column({ nullable: false })
   title: string
 
-  @Column()
+  @Column({ nullable: false })
   description: string
 
-  @Column({ default: true })
-  isActive: boolean
+  // 1: Status.ACTIVE, I do not know why typeORM crashes when I add the enum here
+  @Column({ default: 1 })
+  status: number
 
-  @Column('mediumblob')
+  @Column('mediumblob', { nullable: false })
   photo: Buffer
 
   @ManyToOne(() => User, user => user.recipes)
