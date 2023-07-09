@@ -1,4 +1,5 @@
 import { type IFileService } from '../dto'
+import { LoggerService } from './'
 
 export class FileService implements IFileService {
   convertFileToBuffer = (file: string | undefined): Buffer | undefined => {
@@ -8,8 +9,8 @@ export class FileService implements IFileService {
       const photoBuffer = Buffer.from(file)
 
       return photoBuffer
-    } catch (error) {
-      throw new Error('Error in create file to buffer service')
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in create file to buffer service').message)
     }
   }
 }

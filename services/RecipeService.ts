@@ -8,7 +8,7 @@ import {
 } from '../dto'
 import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 import { type User, type Recipe } from '../models'
-import { FileService, IngredientService, StepService } from './'
+import { FileService, IngredientService, LoggerService, StepService } from './'
 import { RecipeRepository } from '../repositories'
 
 export class RecipeService implements IRecipeService {
@@ -39,10 +39,8 @@ export class RecipeService implements IRecipeService {
       userInstance.ingredient = ingredientsInstance
 
       return userInstance
-    } catch (error) {
-      console.log(error.message)
-
-      throw new Error('Error in create recipe instance service')
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in create recipe instance service').message)
     }
   }
 
@@ -59,9 +57,8 @@ export class RecipeService implements IRecipeService {
       )
 
       await Promise.all([stepsPromises, ingredientsPromises])
-    } catch (error) {
-      console.log(error.message)
-      throw new Error('Error in create recipe service')
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in create recipe service').message)
     }
   }
 
@@ -69,16 +66,16 @@ export class RecipeService implements IRecipeService {
     try {
       const recipe = await this.repository.recipe.findOneBy({ id })
       return recipe
-    } catch (error) {
-      throw new Error('Error in get recipe by id service')
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in get recipe by id service').message)
     }
   }
 
   public updateRecipeByIdService = async (id: number, recipe: QueryDeepPartialEntity<Recipe>): Promise<void> => {
     try {
       await this.repository.recipe.update(id, { ...recipe })
-    } catch (error) {
-      throw new Error('Error in update recipe by id service')
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in update recipe by id service').message)
     }
   }
 
@@ -86,16 +83,16 @@ export class RecipeService implements IRecipeService {
     try {
       const users = await this.repository.recipe.find()
       return users
-    } catch (error) {
-      throw new Error('Error in get all recipes service')
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in get all recipes service').message)
     }
   }
 
   public deleteRecipebyIdService = async (id: number): Promise<void> => {
     try {
       await this.repository.recipe.delete(id)
-    } catch (error) {
-      throw new Error('Error in delete recipe by id service')
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in delete recipe by id service').message)
     }
   }
 
@@ -108,8 +105,8 @@ export class RecipeService implements IRecipeService {
         .getMany()
 
       return recipes
-    } catch (error) {
-      throw new Error('Error in get recipes by custom search service')
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in get recipes by custom search service').message)
     }
   }
 }

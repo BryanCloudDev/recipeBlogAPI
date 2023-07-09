@@ -7,7 +7,7 @@ import {
 } from '../dto'
 import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 import { type Role, type User } from '../models'
-import { AuthenticationService, FileService } from './'
+import { AuthenticationService, FileService, LoggerService } from './'
 import { UserRepository } from '../repositories'
 
 export class UserService implements IUserService {
@@ -25,8 +25,8 @@ export class UserService implements IUserService {
       userRequest.password = await this.authenticationService.encrypt(userRequest.password)
       const user = this.repository.user.create({ ...userRequest, role, photo: photoBuffer })
       return user
-    } catch (error) {
-      throw new Error('Error in create user instance service')
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in create user instance service').message)
     }
   }
 
@@ -35,7 +35,7 @@ export class UserService implements IUserService {
       const createdUser = await this.repository.user.save(user)
       return createdUser
     } catch (error: any) {
-      throw new Error('Error in create user service')
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in create user service').message)
     }
   }
 
@@ -44,7 +44,7 @@ export class UserService implements IUserService {
       const user = await this.repository.user.findOne({ where: { id } })
       return user
     } catch (error: any) {
-      throw new Error('Error in get user by id service')
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in get user by id service').message)
     }
   }
 
@@ -52,7 +52,7 @@ export class UserService implements IUserService {
     try {
       await this.repository.user.update(id, user)
     } catch (error: any) {
-      throw new Error('Error in update user by id service')
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in update user by id service').message)
     }
   }
 
@@ -61,7 +61,7 @@ export class UserService implements IUserService {
       const users = await this.repository.user.find()
       return users
     } catch (error: any) {
-      throw new Error('Error in get all users service')
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in get all users service').message)
     }
   }
 }

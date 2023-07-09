@@ -1,6 +1,6 @@
 import { type IRecipeController, type IRecipeService, type IRecipeRequest } from '../dto'
 import { type Response, type Request } from 'express'
-import { RecipeService } from '../services'
+import { LoggerService, RecipeService } from '../services'
 
 export class RecipeController implements IRecipeController {
   constructor(private readonly recipeService: IRecipeService = new RecipeService()) {}
@@ -9,15 +9,15 @@ export class RecipeController implements IRecipeController {
     try {
       const recipeRequest: IRecipeRequest = req.body
       const recipeInstance = this.recipeService.createRecipeInstanceService(recipeRequest)
-      await this.recipeService.createRecipeService(recipeInstance)
+      await this.recipeService.createRecipeService(recipeInstance, user)
 
       return res.status(201).json({
         message: 'Succesfully created'
       })
-    } catch (error) {
-      return res.status(500).json({
-        message: error.message
-      })
+    } catch (error: any) {
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in create recipe controller')
+
+      return res.status(500).json({ message })
     }
   }
 
@@ -27,10 +27,10 @@ export class RecipeController implements IRecipeController {
       await this.recipeService.deleteRecipebyIdService(id)
 
       return res.status(204).json()
-    } catch (error) {
-      return res.status(500).json({
-        message: error.message
-      })
+    } catch (error: any) {
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in delete recipe by id controller')
+
+      return res.status(500).json({ message })
     }
   }
 
@@ -39,10 +39,10 @@ export class RecipeController implements IRecipeController {
       const recipes = await this.recipeService.getAllRecipesService()
 
       return res.status(200).json(recipes)
-    } catch (error) {
-      return res.status(500).json({
-        message: error.message
-      })
+    } catch (error: any) {
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in get all recipes controller')
+
+      return res.status(500).json({ message })
     }
   }
 
@@ -53,9 +53,9 @@ export class RecipeController implements IRecipeController {
 
       return res.status(200).json(recipe)
     } catch (error) {
-      return res.status(500).json({
-        message: error.message
-      })
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in get recipe by id controller')
+
+      return res.status(500).json({ message })
     }
   }
 
@@ -65,9 +65,9 @@ export class RecipeController implements IRecipeController {
       const recipes = await this.recipeService.getRecipesBySearchService(search)
       return res.status(200).json(recipes)
     } catch (error) {
-      return res.status(500).json({
-        message: error.message
-      })
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in get recipes by search controller')
+
+      return res.status(500).json({ message })
     }
   }
 }

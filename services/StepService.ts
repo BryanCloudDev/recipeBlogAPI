@@ -1,3 +1,4 @@
+import { LoggerService } from '.'
 import { type IStepService, type IStepRequest, type IStepRepository } from '../dto'
 import { type Step, type Recipe } from '../models'
 import { StepRepository } from '../repositories'
@@ -7,16 +8,16 @@ export class StepService implements IStepService {
   createStepInstanceService = (stepRequest: IStepRequest): Step => {
     try {
       return this.repository.step.create({ ...stepRequest })
-    } catch (error) {
-      throw new Error('Error in create step instance service')
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in create step instance service').message)
     }
   }
 
   createStepService = async (step: Step, recipe: Recipe): Promise<void> => {
     try {
       await this.repository.step.save({ ...step, recipe })
-    } catch (error) {
-      throw new Error('Error in create step service')
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in create step service').message)
     }
   }
 }
