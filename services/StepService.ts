@@ -5,10 +5,18 @@ export class StepService implements IStepService {
   constructor(readonly repository: IStepRepository = new StepRepository()) {}
 
   createStepInstanceService = (stepRequest: IStepRequest): Step => {
-    return this.repository.step.create({ ...stepRequest })
+    try {
+      return this.repository.step.create({ ...stepRequest })
+    } catch (error) {
+      throw new Error('Error in create step instance service')
+    }
   }
 
   createStepService = async (step: Step, recipe: Recipe): Promise<void> => {
-    await this.repository.step.save({ ...step, recipe })
+    try {
+      await this.repository.step.save({ ...step, recipe })
+    } catch (error) {
+      throw new Error('Error in create step service')
+    }
   }
 }
