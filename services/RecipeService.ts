@@ -19,7 +19,7 @@ export class RecipeService implements IRecipeService {
     private readonly ingredientService: IIngredientService = new IngredientService()
   ) {}
 
-  createRecipeInstanceService = (recipeRequest: IRecipeRequest): Recipe => {
+  public createRecipeInstanceService = (recipeRequest: IRecipeRequest): Recipe => {
     try {
       const { ingredients, photo, steps, ...recipe } = recipeRequest
 
@@ -46,7 +46,7 @@ export class RecipeService implements IRecipeService {
     }
   }
 
-  createRecipeService = async (recipe: Recipe): Promise<void> => {
+  public createRecipeService = async (recipe: Recipe): Promise<void> => {
     try {
       const createdRecipe = await this.repository.recipe.save(recipe)
 
@@ -64,7 +64,7 @@ export class RecipeService implements IRecipeService {
     }
   }
 
-  getRecipebyIdService = async (id: number): Promise<Recipe | null> => {
+  public getRecipebyIdService = async (id: number): Promise<Recipe | null> => {
     try {
       const recipe = await this.repository.recipe.findOneBy({ id })
       return recipe
@@ -73,7 +73,7 @@ export class RecipeService implements IRecipeService {
     }
   }
 
-  updateRecipeByIdService = async (id: number, recipe: QueryDeepPartialEntity<Recipe>): Promise<void> => {
+  public updateRecipeByIdService = async (id: number, recipe: QueryDeepPartialEntity<Recipe>): Promise<void> => {
     try {
       await this.repository.recipe.update(id, { ...recipe })
     } catch (error) {
@@ -81,7 +81,7 @@ export class RecipeService implements IRecipeService {
     }
   }
 
-  getAllRecipesService = async (): Promise<Recipe[]> => {
+  public getAllRecipesService = async (): Promise<Recipe[]> => {
     try {
       const users = await this.repository.recipe.find()
       return users
@@ -90,7 +90,7 @@ export class RecipeService implements IRecipeService {
     }
   }
 
-  deleteRecipebyIdService = async (id: number): Promise<void> => {
+  public deleteRecipebyIdService = async (id: number): Promise<void> => {
     try {
       await this.repository.recipe.delete(id)
     } catch (error) {
@@ -98,7 +98,7 @@ export class RecipeService implements IRecipeService {
     }
   }
 
-  getRecipesBySearchService = async (search: string): Promise<Recipe[]> => {
+  public getRecipesBySearchService = async (search: string): Promise<Recipe[]> => {
     try {
       const recipes = await this.repository.recipe
         .createQueryBuilder('recipe')
