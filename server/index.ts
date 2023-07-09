@@ -4,6 +4,8 @@ import { type IUserRouter } from '../dto'
 import { makeDBConnection } from '../database'
 import { appFactory, portFactory, routeFactory } from '../services'
 import { UserRouter } from '../routes'
+import type IRecipeRouter from '../dto/recipe/IRecipeRouter'
+import RecipeRouter from '../routes/RecipeRouter'
 
 export default class Server {
   private readonly _app: Application
@@ -13,6 +15,7 @@ export default class Server {
 
   constructor(
     readonly userRouter: IUserRouter = new UserRouter(),
+    readonly recipeRouter: IRecipeRouter = new RecipeRouter(),
     readonly App: () => Application = appFactory,
     readonly Port: () => number = portFactory,
     readonly Router: () => Router = routeFactory
@@ -40,6 +43,7 @@ export default class Server {
   private routes(): void {
     // App routers
     this._router.use(this.userRouter.route, this.userRouter.router)
+    this._router.use(this.recipeRouter.route, this.recipeRouter.router)
 
     // API router
     this._app.use(this.route, this._router)
