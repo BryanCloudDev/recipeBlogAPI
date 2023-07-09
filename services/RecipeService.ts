@@ -7,7 +7,7 @@ import {
   type IRecipeRepository
 } from '../dto'
 import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
-import { type Recipe } from '../models'
+import { type User, type Recipe } from '../models'
 import { FileService, IngredientService, StepService } from './'
 import { RecipeRepository } from '../repositories'
 
@@ -46,9 +46,9 @@ export class RecipeService implements IRecipeService {
     }
   }
 
-  public createRecipeService = async (recipe: Recipe): Promise<void> => {
+  public createRecipeService = async (recipe: Recipe, user: User): Promise<void> => {
     try {
-      const createdRecipe = await this.repository.recipe.save(recipe)
+      const createdRecipe = await this.repository.recipe.save({ ...recipe, user })
 
       const stepsPromises: Array<Promise<void>> = recipe.step.map(step =>
         this.stepService.createStepService(step, createdRecipe)
@@ -60,6 +60,7 @@ export class RecipeService implements IRecipeService {
 
       await Promise.all([stepsPromises, ingredientsPromises])
     } catch (error) {
+      console.log(error.message)
       throw new Error('Error in create recipe service')
     }
   }
