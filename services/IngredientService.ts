@@ -1,7 +1,7 @@
-import { type IIngredientRequest, type IIngredientService } from '../dto'
 import type IIngredientRepository from '../dto/recipe/ingredient/IIngredientRepository'
-import { type Recipe, type Ingredient } from '../models'
-import IngredientRepository from '../repositories/IngredientRepository'
+import { IngredientRepository } from '../repositories'
+import { type IIngredientService, type IIngredientRequest } from '../dto'
+import { type Ingredient, type Recipe } from '../models'
 
 export default class IngredientService implements IIngredientService {
   constructor(readonly repository: IIngredientRepository = new IngredientRepository()) {}
