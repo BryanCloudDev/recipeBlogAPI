@@ -1,6 +1,6 @@
 import { type Recipe } from '../../models'
 import { type Repository } from 'typeorm'
 
-export default interface IRecipeRepository {
+export interface IRecipeRepository {
   recipe: Repository<Recipe>
 }

@@ -1,3 +1,3 @@
-import type IRouterBase from '../IRouterBase'
+import { type IRouterBase } from '../'
 
-export default interface IUserRouter extends IRouterBase {}
+export interface IUserRouter extends IRouterBase {}

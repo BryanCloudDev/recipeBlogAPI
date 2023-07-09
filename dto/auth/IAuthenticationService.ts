@@ -1,3 +1,3 @@
-export default interface IAuthenticationService {
+export interface IAuthenticationService {
   encrypt: (text: string) => Promise<string>
 }

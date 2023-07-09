@@ -2,7 +2,7 @@ import { type IRecipeRequest } from '../'
 import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 import { type Recipe } from '../../models'
 
-export default interface IRecipeService {
+export interface IRecipeService {
   createRecipeInstanceService: (recipeRequest: IRecipeRequest) => Recipe
   createRecipeService: (recipe: Recipe) => Promise<void>
   deleteRecipebyIdService: (id: number) => Promise<void>

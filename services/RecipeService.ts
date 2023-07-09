@@ -1,17 +1,17 @@
-import type IRecipeRepository from '../dto/recipe/IRecipeRepository'
-import { FileService, IngredientService, StepService } from './'
-import { RecipeRepository } from '../repositories'
 import {
   type IRecipeService,
   type IFileService,
   type IStepService,
   type IIngredientService,
-  type IRecipeRequest
+  type IRecipeRequest,
+  type IRecipeRepository
 } from '../dto'
 import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 import { type Recipe } from '../models'
+import { FileService, IngredientService, StepService } from './'
+import { RecipeRepository } from '../repositories'
 
-export default class RecipeService implements IRecipeService {
+export class RecipeService implements IRecipeService {
   constructor(
     private readonly repository: IRecipeRepository = new RecipeRepository(),
     private readonly fileService: IFileService = new FileService(),

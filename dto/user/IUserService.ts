@@ -1,8 +1,8 @@
+import { type IUserRequest } from './'
 import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 import { type Role, type User } from '../../models'
-import type IUserRequest from './IUserRequest'
 
-export default interface IUserService {
+export interface IUserService {
   createUserInstanceService: (userRequest: IUserRequest, role: Role) => Promise<User>
   createUserService: (user: User) => Promise<User>
   getUserbyIdService: (id: number) => Promise<User | null>

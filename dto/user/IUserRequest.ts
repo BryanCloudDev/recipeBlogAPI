@@ -1,4 +1,4 @@
-export default interface IUserRequest {
+export interface IUserRequest {
   firstName: string
   lastName: string
   birthDate: Date

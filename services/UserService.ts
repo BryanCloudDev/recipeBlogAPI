@@ -1,10 +1,10 @@
-import AuthenticationService from './AuthenticationService'
-import { UserRepository } from '../repositories'
 import { type IUserService, type IAuthenticationService, type IUserRepository, type IUserRequest } from '../dto'
 import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 import { type Role, type User } from '../models'
+import { AuthenticationService } from './'
+import { UserRepository } from '../repositories'
 
-export default class UserService implements IUserService {
+export class UserService implements IUserService {
   constructor(
     readonly authenticationService: IAuthenticationService = new AuthenticationService(),
     readonly repository: IUserRepository = new UserRepository()

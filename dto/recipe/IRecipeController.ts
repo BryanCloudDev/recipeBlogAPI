@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express'
 
-export default interface IRecipeController {
+export interface IRecipeController {
   createRecipe: (req: Request, res: Response) => Promise<Response>
   deleteRecipe: (req: Request, res: Response) => Promise<Response>
   getAllRecipes: (req: Request, res: Response) => Promise<Response>

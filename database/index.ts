@@ -22,6 +22,6 @@ export async function makeDBConnection(): Promise<void> {
     await AppDataSource.initialize()
     console.log('Successfully connected to Database')
   } catch (error: any) {
-    console.log(error.message)
+    console.log(error)
   }
 }

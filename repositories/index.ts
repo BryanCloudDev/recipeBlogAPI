@@ -1,6 +1,4 @@
-import IngredientRepository from './IngredientRepository'
-import RecipeRepository from './RecipeRepository'
-import StepRepository from './StepRepository'
-import UserRepository from './UserRespository'
-
-export { IngredientRepository, RecipeRepository, StepRepository, UserRepository }
+export * from './IngredientRepository'
+export * from './RecipeRepository'
+export * from './StepRepository'
+export * from './UserRespository'

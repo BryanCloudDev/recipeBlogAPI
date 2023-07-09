@@ -1,6 +1,6 @@
 import type { IIngredientRequest, IStepRequest } from '../'
 
-export default interface IRecipeRequest {
+export interface IRecipeRequest {
   description: string
   ingredients: IIngredientRequest[]
   photo: string

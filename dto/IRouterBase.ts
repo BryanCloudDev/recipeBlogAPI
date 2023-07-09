@@ -1,6 +1,6 @@
 import { type Router } from 'express'
 
-export default interface IRouterBase {
+export interface IRouterBase {
   initializeRoutes: () => void
   _router: Router
   route: string

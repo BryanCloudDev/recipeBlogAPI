@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { type IAuthenticationService } from '../dto'
 
-export default class AuthenticationService implements IAuthenticationService {
+export class AuthenticationService implements IAuthenticationService {
   encrypt = async (text: string): Promise<string> => {
     try {
       const salt = await bcrypt.genSalt()

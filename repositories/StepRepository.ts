@@ -1,8 +1,8 @@
+import { type IStepRepository } from '../dto'
 import { type Repository } from 'typeorm'
-import { stepRepository } from './repositories'
 import { type Step } from '../models'
-import type IStepRepository from '../dto/recipe/step/IStepRepository'
+import { stepRepository } from './repositories'
 
-export default class StepRepository implements IStepRepository {
+export class StepRepository implements IStepRepository {
   constructor(readonly step: Repository<Step> = stepRepository) {}
 }

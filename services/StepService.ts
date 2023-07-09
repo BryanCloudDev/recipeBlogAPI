@@ -1,9 +1,7 @@
-import type IStepRepository from '../dto/recipe/step/IStepRepository'
-import { StepRepository } from '../repositories'
-import { type IStepService, type IStepRequest } from '../dto'
+import { type IStepService, type IStepRequest, type IStepRepository } from '../dto'
 import { type Step, type Recipe } from '../models'
-
-export default class StepService implements IStepService {
+import { StepRepository } from '../repositories'
+export class StepService implements IStepService {
   constructor(readonly repository: IStepRepository = new StepRepository()) {}
 
   createStepInstanceService = (stepRequest: IStepRequest): Step => {

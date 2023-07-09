@@ -1,7 +1,7 @@
+import { type ICustomRequest } from '../'
 import { type Response, type Request } from 'express'
-import type ICustomRequest from '../request/ICustomRequest'
 
-export default interface IUserController {
+export interface IUserController {
   createUser: (req: ICustomRequest, res: Response) => Promise<Response>
   deleteUser: (req: Request, res: Response) => Promise<Response>
   getAllUsers: (req: Request, res: Response) => Promise<Response>

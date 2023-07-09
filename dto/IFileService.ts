@@ -1,3 +1,3 @@
-export default interface IFileService {
+export interface IFileService {
   convertFileToBuffer: (file: string | undefined) => Buffer | undefined
 }

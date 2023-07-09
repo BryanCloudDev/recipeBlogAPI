@@ -1,6 +1,6 @@
 import { type IFileService } from '../dto'
 
-export default class FileService implements IFileService {
+export class FileService implements IFileService {
   convertFileToBuffer = (file: string | undefined): Buffer | undefined => {
     try {
       if (file === undefined) return file
