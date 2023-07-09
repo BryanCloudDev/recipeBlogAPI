@@ -1,11 +1,6 @@
-import {
-  Column,
-  CreateDateColumn,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn
-} from 'typeorm'
+import { Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
-export default class ItemRecipeBase {
+export class ItemRecipeBase {
   @PrimaryGeneratedColumn()
   id: number
 

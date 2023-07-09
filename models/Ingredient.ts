@@ -1,9 +1,9 @@
 import { Entity, ManyToOne } from 'typeorm'
-import Recipe from './Recipe'
-import ItemRecipeBase from './ItemRecipeBase'
+import { ItemRecipeBase } from './ItemRecipeBase'
+import { Recipe } from './Recipe'
 
 @Entity()
-export default class Ingredient extends ItemRecipeBase {
+export class Ingredient extends ItemRecipeBase {
   @ManyToOne(() => Recipe, recipe => recipe.ingredient)
   recipe: Recipe
 }

@@ -10,7 +10,7 @@ import {
 import { Ingredient, Step, User } from './'
 
 @Entity()
-export default class Recipe {
+export class Recipe {
   @PrimaryGeneratedColumn()
   id: number
 
