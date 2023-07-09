@@ -1,5 +1,5 @@
 import { type Repository } from 'typeorm'
-import { stepRepository } from '.'
+import { stepRepository } from './repositories'
 import { type Step } from '../models'
 import type IStepRepository from '../dto/recipe/step/IStepRepository'
 

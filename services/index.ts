@@ -1,6 +1,7 @@
 import AuthenticationService from './AuthenticationService'
-import UserService from './UserService'
+import RecipeService from './RecipeService'
 import Status from './enums/Status'
+import UserService from './UserService'
 import { appFactory, routeFactory, portFactory } from './utils'
 
-export { AuthenticationService, Status, UserService, appFactory, portFactory, routeFactory }
+export { AuthenticationService, RecipeService, Status, UserService, appFactory, portFactory, routeFactory }
