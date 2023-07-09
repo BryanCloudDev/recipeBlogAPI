@@ -3,7 +3,7 @@ import { type Response, type Request } from 'express'
 import { type User } from '../models'
 import { Status, UserService } from '../services'
 
-export default class UserController implements IUserController {
+export class UserController implements IUserController {
   constructor(readonly userService: IUserService = new UserService()) {}
 
   createUser = async (req: ICustomRequest, res: Response): Promise<Response> => {

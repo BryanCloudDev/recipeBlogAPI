@@ -1,3 +1,2 @@
-import UserController from './UserController'
-
-export { UserController }
+export * from './RecipeController'
+export * from './UserController'

@@ -1,11 +1,9 @@
 import cors from 'cors'
 import express, { type Application, type Router } from 'express'
-import { type IUserRouter } from '../dto'
-import { makeDBConnection } from '../database'
+import { type IRecipeRouter, type IUserRouter } from '../dto'
+import { RecipeRouter, UserRouter } from '../routes'
 import { appFactory, portFactory, routeFactory } from '../services'
-import { UserRouter } from '../routes'
-import type IRecipeRouter from '../dto/recipe/IRecipeRouter'
-import RecipeRouter from '../routes/RecipeRouter'
+import { makeDBConnection } from '../database'
 
 export default class Server {
   private readonly _app: Application

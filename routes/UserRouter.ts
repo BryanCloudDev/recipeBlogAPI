@@ -1,9 +1,9 @@
-import { UserController } from '../controllers'
-import { routeFactory } from '../services'
 import { type IUserController, type IUserRouter } from '../dto'
 import { type Router } from 'express'
+import { UserController } from '../controllers'
+import { routeFactory } from '../services'
 
-export default class UserRouter implements IUserRouter {
+export class UserRouter implements IUserRouter {
   readonly _router: Router
   readonly route = '/users'
 

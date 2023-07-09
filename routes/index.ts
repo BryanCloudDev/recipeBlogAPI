@@ -1,3 +1,2 @@
-import UserRouter from './UserRouter'
-
-export { UserRouter }
+export * from './RecipeRouter'
+export * from './UserRouter'

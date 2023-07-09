@@ -1,10 +1,9 @@
-import { routeFactory } from '../services'
-import { type IRecipeController } from '../dto'
+import { type IRecipeRouter, type IRecipeController } from '../dto'
 import { type Router } from 'express'
-import RecipeController from '../controllers/RecipeController'
-import type IRecipeRouter from '../dto/recipe/IRecipeRouter'
+import { RecipeController } from '../controllers'
+import { routeFactory } from '../services'
 
-export default class RecipeRouter implements IRecipeRouter {
+export class RecipeRouter implements IRecipeRouter {
   readonly _router: Router
   readonly route = '/recipes'
 

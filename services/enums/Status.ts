@@ -3,5 +3,3 @@ export enum Status {
   INACTIVE = 2,
   BANNED = 3
 }
-
-export default Status

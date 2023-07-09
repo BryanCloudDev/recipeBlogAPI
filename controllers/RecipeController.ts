@@ -2,7 +2,7 @@ import { type IRecipeController, type IRecipeService, type IRecipeRequest } from
 import { type Response, type Request } from 'express'
 import { RecipeService } from '../services'
 
-export default class RecipeController implements IRecipeController {
+export class RecipeController implements IRecipeController {
   constructor(private readonly recipeService: IRecipeService = new RecipeService()) {}
 
   public createRecipe = async (req: Request, res: Response): Promise<Response> => {
