@@ -1,7 +1,7 @@
 import { type IUserController, type IUserService, type ICustomRequest, type IUserRequest } from '../dto'
 import { type Response, type Request } from 'express'
 import { type User } from '../models'
-import { Status, UserService } from '../services'
+import { LoggerService, Status, UserService } from '../services'
 
 export class UserController implements IUserController {
   constructor(readonly userService: IUserService = new UserService()) {}
@@ -19,7 +19,8 @@ export class UserController implements IUserController {
         message: 'Successfully created'
       })
     } catch (error: any) {
-      return res.status(500).json(error.message)
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in create user controller')
+      return res.status(500).json({ message })
     }
   }
 
@@ -31,7 +32,8 @@ export class UserController implements IUserController {
 
       return res.status(204).json({})
     } catch (error: any) {
-      return res.status(500).json(error.message)
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in delete user by id controller')
+      return res.status(500).json({ message })
     }
   }
 
@@ -40,7 +42,8 @@ export class UserController implements IUserController {
       const users = await this.userService.getAllUsersService()
       return res.status(200).json(users)
     } catch (error: any) {
-      return res.status(500).json(error.message)
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in get all users controller')
+      return res.status(500).json({ message })
     }
   }
 
@@ -51,7 +54,8 @@ export class UserController implements IUserController {
 
       return res.status(200).json(user)
     } catch (error: any) {
-      return res.status(500).json(error.message)
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in get user by id controller')
+      return res.status(500).json({ message })
     }
   }
 
@@ -65,7 +69,8 @@ export class UserController implements IUserController {
         roleId: id
       })
     } catch (error: any) {
-      return res.status(500).json(error.message)
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in get user profile controller')
+      return res.status(500).json({ message })
     }
   }
 }
