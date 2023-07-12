@@ -1,10 +1,10 @@
-import { type IUserMiddleWare } from '../../dto'
+import { type IPassportService, type IUserMiddleWare } from '../../dto'
 import { type Request, type Response, type NextFunction } from 'express'
 import { type User } from '../../models'
 import { LoggerService, PassportService, Status } from '../../services'
 
 export class UserMiddleWare implements IUserMiddleWare {
-  constructor(readonly passportService = new PassportService()) {}
+  constructor(readonly passportService: IPassportService = new PassportService()) {}
 
   validateJWT = (req: Request, res: Response, next: NextFunction): void => {
     this.passportService.passport.authenticate('jwt', async (err: Error | null, user: User | false, info: any) => {
