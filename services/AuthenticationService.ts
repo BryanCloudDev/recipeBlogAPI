@@ -12,4 +12,13 @@ export class AuthenticationService implements IAuthenticationService {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in password encryption').message)
     }
   }
+
+  checkPassword = async (password: string, hash: string): Promise<boolean> => {
+    try {
+      const isCorrect = await bcrypt.compare(password, hash)
+      return isCorrect
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in password verification').message)
+    }
+  }
 }
