@@ -5,8 +5,8 @@ import { AuthenticationService, LoggerService, PassportService, Status } from '.
 
 export class AuthorizationController implements IAuthorizationController {
   constructor(
-    readonly authenticationService: IAuthenticationService = new AuthenticationService(),
-    readonly passportService: IPassportService = new PassportService()
+    private readonly authenticationService: IAuthenticationService = new AuthenticationService(),
+    private readonly passportService: IPassportService = new PassportService()
   ) {}
 
   login = (req: Request, res: Response, next: NextFunction): void => {
