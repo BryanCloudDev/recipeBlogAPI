@@ -36,6 +36,7 @@ export class AuthorizationController implements IAuthorizationController {
             return
           }
           const { id, email, role } = user
+
           const { id: roleId } = role
 
           const token = await this.authenticationService.generateJWT({ id, email, role: roleId })

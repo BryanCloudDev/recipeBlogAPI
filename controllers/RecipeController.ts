@@ -1,5 +1,6 @@
 import { type IRecipeController, type IRecipeService, type IRecipeRequest } from '../dto'
 import { type Response, type Request } from 'express'
+import { type User } from '../models'
 import { LoggerService, RecipeService } from '../services'
 
 export class RecipeController implements IRecipeController {
@@ -7,6 +8,8 @@ export class RecipeController implements IRecipeController {
 
   public createRecipe = async (req: Request, res: Response): Promise<Response> => {
     try {
+      const user = req.user as User
+
       const recipeRequest: IRecipeRequest = req.body
       const recipeInstance = this.recipeService.createRecipeInstanceService(recipeRequest)
       await this.recipeService.createRecipeService(recipeInstance, user)

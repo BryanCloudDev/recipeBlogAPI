@@ -1,7 +1,7 @@
 import cors from 'cors'
 import express, { type Application, type Router } from 'express'
-import { type IRecipeRouter, type IUserRouter } from '../dto'
-import { RecipeRouter, UserRouter } from '../routes'
+import { type IAuthorizationRouter, type IRecipeRouter, type IUserRouter } from '../dto'
+import { AuthorizationRouter, RecipeRouter, UserRouter } from '../routes'
 import { appFactory, portFactory, routeFactory } from '../services'
 import { makeDBConnection } from '../database'
 
@@ -12,8 +12,9 @@ export default class Server {
   private readonly route = '/api'
 
   constructor(
-    readonly userRouter: IUserRouter = new UserRouter(),
+    readonly authorizationRouter: IAuthorizationRouter = new AuthorizationRouter(),
     readonly recipeRouter: IRecipeRouter = new RecipeRouter(),
+    readonly userRouter: IUserRouter = new UserRouter(),
     readonly App: () => Application = appFactory,
     readonly Port: () => number = portFactory,
     readonly Router: () => Router = routeFactory
@@ -40,8 +41,9 @@ export default class Server {
 
   private routes(): void {
     // App routers
-    this._router.use(this.userRouter.route, this.userRouter.router)
+    this._router.use(this.authorizationRouter.route, this.authorizationRouter.router)
     this._router.use(this.recipeRouter.route, this.recipeRouter.router)
+    this._router.use(this.userRouter.route, this.userRouter.router)
 
     // API router
     this._app.use(this.route, this._router)
