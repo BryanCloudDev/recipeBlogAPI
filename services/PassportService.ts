@@ -9,9 +9,9 @@ import { UserRepository } from '../repositories'
 
 export class PassportService implements IPassportService {
   constructor(
-    readonly passportCustom: passport.PassportStatic = passport,
-    readonly authenticationService: IAuthenticationService = new AuthenticationService(),
-    readonly repository: IUserRepository = new UserRepository()
+    private readonly passportCustom: passport.PassportStatic = passport,
+    private readonly authenticationService: IAuthenticationService = new AuthenticationService(),
+    private readonly repository: IUserRepository = new UserRepository()
   ) {}
 
   localStrategy = (): void => {
