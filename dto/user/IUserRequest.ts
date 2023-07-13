@@ -5,4 +5,5 @@ export interface IUserRequest {
   email: string
   password: string
   photo: string
+  status: number
 }

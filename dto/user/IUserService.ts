@@ -1,5 +1,4 @@
 import { type IUserRequest } from './'
-import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 import { type Role, type User } from '../../models'
 
 export interface IUserService {
@@ -7,5 +6,5 @@ export interface IUserService {
   createUserService: (user: User) => Promise<User>
   getAllUsersService: () => Promise<User[]>
   getUserbyIdService: (id: number) => Promise<User | null>
-  updateUserByIdService: (id: number, user: QueryDeepPartialEntity<User>) => Promise<void>
+  updateUserByIdService: (id: number, user: Partial<IUserRequest>) => Promise<void>
 }

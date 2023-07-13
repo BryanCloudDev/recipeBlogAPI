@@ -5,7 +5,6 @@ import {
   type IUserRequest,
   type IFileService
 } from '../dto'
-import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 import { type Role, type User } from '../models'
 import { AuthenticationService, FileService, LoggerService } from './'
 import { UserRepository } from '../repositories'
@@ -48,9 +47,13 @@ export class UserService implements IUserService {
     }
   }
 
-  public updateUserByIdService = async (id: number, user: QueryDeepPartialEntity<User>): Promise<void> => {
+  public updateUserByIdService = async (id: number, user: Partial<IUserRequest>): Promise<void> => {
     try {
-      await this.repository.user.update(id, user)
+      const { photo, password, ...userRequest } = user
+
+      const photoBuffer = this.fileService.convertFileToBuffer(photo)
+
+      await this.repository.user.update(id, { ...userRequest, photo: photoBuffer })
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in update user by id service').message)
     }
