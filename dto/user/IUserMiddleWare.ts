@@ -1,5 +1,8 @@
+import { type ICustomRequest } from '../ICustomRequest'
 import { type NextFunction, type Request, type Response } from 'express'
 
 export interface IUserMiddleWare {
-  validateJWT: (req: Request, res: Response, next: NextFunction) => void
+  validateEmailInChange: (req: Request, res: Response, next: NextFunction) => Promise<Response | undefined>
+  validateUserOnDelete: (req: ICustomRequest, res: Response, next: NextFunction) => Promise<Response | undefined>
+  validateUserId: (req: ICustomRequest, res: Response, next: NextFunction) => Promise<Response | undefined>
 }

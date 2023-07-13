@@ -1,43 +1,71 @@
-import { type IPassportService, type IUserMiddleWare } from '../../dto'
+import { type IUserRequest, type IUserMiddleWare, type IUserService, type ICustomRequest } from '../../dto'
 import { type Request, type Response, type NextFunction } from 'express'
-import { type User } from '../../models'
-import { LoggerService, PassportService, Status } from '../../services'
+import { LoggerService, Status, UserService } from '../../services'
+import { userRepository } from '../../repositories/repositories'
 
 export class UserMiddleWare implements IUserMiddleWare {
-  constructor(readonly passportService: IPassportService = new PassportService()) {}
+  constructor(readonly userService: IUserService = new UserService()) {}
 
-  validateJWT = (req: Request, res: Response, next: NextFunction): void => {
-    this.passportService.passport.authenticate('jwt', async (err: Error | null, user: User | false, info: any) => {
-      try {
-        if (err !== null || user === false) {
-          return res.status(400).json({
-            message: info.message
-          })
-        }
+  validateEmailInChange = async (req: Request, res: Response, next: NextFunction): Promise<Response | undefined> => {
+    try {
+      const { email }: IUserRequest = req.body
 
-        if (user.status === Status.INACTIVE) {
-          return res.status(403).json({
-            message: 'User has been deleted'
-          })
-        }
-
-        if (user.status === Status.BANNED) {
-          return res.status(403).json({
-            message: 'User has been banned'
-          })
-        }
-
-        req.login(user, { session: false }, async (err: any) => {
-          if (err !== undefined) {
-            next(err)
-          }
-
-          next()
-        })
-      } catch (error) {
-        next(error)
-        return res.status(500).json(LoggerService.errorMessageHandler(error, 'Error in jwt verification'))
+      if (email === undefined) {
+        next()
+        return undefined
       }
-    })(req, res, next)
+
+      const id = parseInt(req.params.id)
+      const user = await this.userService.getUserbyIdService(id)
+
+      if (user !== null && user.email !== email) {
+        const existingEmail = await userRepository.findOne({ where: { email } })
+
+        if (existingEmail !== null) {
+          return res.status(400).json({
+            message: `Email ${email} is already in use`
+          })
+        }
+      }
+      next()
+    } catch (error: any) {
+      return res.status(500).json(LoggerService.errorMessageHandler(error, 'Error in validate Email in change'))
+    }
+  }
+
+  validateUserOnDelete = async (
+    req: ICustomRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | undefined> => {
+    const user = req.user
+
+    if (user.status === Status.INACTIVE || user.status === Status.BANNED) {
+      return res.status(400).json({
+        message: `The user has been marked already as ${user.status === Status.INACTIVE ? 'inactive' : 'banned'}`
+      })
+    }
+
+    next()
+  }
+
+  validateUserId = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
+    try {
+      const id = parseInt(req.params.id)
+
+      const user = await this.userService.getUserbyIdService(id)
+
+      if (user === null) {
+        return res.status(404).json({
+          message: `The user with the id ${id} does not exist`
+        })
+      }
+
+      req.user = user
+
+      next()
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in exists user by id middleware').message)
+    }
   }
 }
