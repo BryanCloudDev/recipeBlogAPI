@@ -86,4 +86,18 @@ export class UserController implements IUserController {
       return res.status(500).json({ message })
     }
   }
+
+  updateUserPasswordbyId = async (req: ICustomRequest, res: Response): Promise<Response> => {
+    try {
+      const { currentPassword, newPassword } = req.body
+      const user = req.user
+
+      const result = await this.userService.updateUserPasswordService(user, currentPassword, newPassword)
+
+      return result !== undefined ? res.status(400).json({ message: result }) : res.status(204).json({})
+    } catch (error: any) {
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in update user profile controller')
+      return res.status(500).json({ message })
+    }
+  }
 }

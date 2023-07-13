@@ -67,4 +67,20 @@ export class UserService implements IUserService {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in get all users service').message)
     }
   }
+
+  public updateUserPasswordService = async (
+    user: User,
+    currentPassword: string,
+    newPassword: string
+  ): Promise<string | undefined> => {
+    const { password } = user
+    const resultPasswordCheck = await this.authenticationService.checkPassword(currentPassword, password)
+    if (!resultPasswordCheck) {
+      return 'Current password does not match'
+    }
+
+    const newPasswordHash = await this.authenticationService.encrypt(newPassword)
+
+    await this.updateUserByIdService(user.id, { password: newPasswordHash })
+  }
 }

@@ -7,4 +7,5 @@ export interface IUserService {
   getAllUsersService: () => Promise<User[]>
   getUserbyIdService: (id: number) => Promise<User | null>
   updateUserByIdService: (id: number, user: Partial<IUserRequest>) => Promise<void>
+  updateUserPasswordService: (user: User, currentPassword: string, newPassword: string) => Promise<string | undefined>
 }
