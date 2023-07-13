@@ -21,4 +21,13 @@ export class IngredientService implements IIngredientService {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in create ingredient service').message)
     }
   }
+
+  updateIngredientService = async (ingredient: IIngredientRequest): Promise<void> => {
+    try {
+      const { id } = ingredient
+      await this.repository.ingredient.update(id, { ...ingredient })
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in update ingredient service').message)
+    }
+  }
 }

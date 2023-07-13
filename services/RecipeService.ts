@@ -6,7 +6,6 @@ import {
   type IRecipeRequest,
   type IRecipeRepository
 } from '../dto'
-import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 import { type User, type Recipe } from '../models'
 import { FileService, IngredientService, LoggerService, StepService } from './'
 import { RecipeRepository } from '../repositories'
@@ -71,9 +70,20 @@ export class RecipeService implements IRecipeService {
     }
   }
 
-  public updateRecipeByIdService = async (id: number, recipe: QueryDeepPartialEntity<Recipe>): Promise<void> => {
+  public updateRecipeByIdService = async (id: number, recipe: IRecipeRequest): Promise<void> => {
     try {
-      await this.repository.recipe.update(id, { ...recipe })
+      const { photo, steps, ingredients, ...recipeRequest } = recipe
+
+      const photoBuffer = this.fileService.convertFileToBuffer(photo)
+
+      const stepsPromises = steps.map(step => this.stepService.updateStepService(step))
+      const ingredientsPromises = ingredients.map(ingredient =>
+        this.ingredientService.updateIngredientService(ingredient)
+      )
+
+      await Promise.all([stepsPromises, ingredientsPromises])
+
+      await this.repository.recipe.update(id, { ...recipeRequest, photo: photoBuffer })
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in update recipe by id service').message)
     }

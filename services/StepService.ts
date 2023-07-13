@@ -20,4 +20,13 @@ export class StepService implements IStepService {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in create step service').message)
     }
   }
+
+  updateStepService = async (step: IStepRequest): Promise<void> => {
+    try {
+      const { id } = step
+      await this.repository.step.update(id, { ...step })
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in update step service').message)
+    }
+  }
 }

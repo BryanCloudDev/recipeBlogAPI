@@ -1,5 +1,4 @@
 import { type IRecipeRequest } from '../'
-import { type QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
 import { type User, type Recipe } from '../../models'
 
 export interface IRecipeService {
@@ -9,5 +8,5 @@ export interface IRecipeService {
   getAllRecipesService: () => Promise<Recipe[]>
   getRecipebyIdService: (id: number) => Promise<Recipe | null>
   getRecipesBySearchService: (search: string) => Promise<Recipe[]>
-  updateRecipeByIdService: (id: number, recipe: QueryDeepPartialEntity<Recipe>) => Promise<void>
+  updateRecipeByIdService: (id: number, recipe: IRecipeRequest) => Promise<void>
 }

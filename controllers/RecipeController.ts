@@ -1,4 +1,4 @@
-import { type IRecipeController, type IRecipeService, type IRecipeRequest } from '../dto'
+import { type IRecipeController, type IRecipeService, type IRecipeRequest, type ICustomRequest } from '../dto'
 import { type Response, type Request } from 'express'
 import { type User } from '../models'
 import { LoggerService, RecipeService } from '../services'
@@ -67,6 +67,21 @@ export class RecipeController implements IRecipeController {
       const { search } = req.params
       const recipes = await this.recipeService.getRecipesBySearchService(search)
       return res.status(200).json(recipes)
+    } catch (error) {
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in get recipes by search controller')
+
+      return res.status(500).json({ message })
+    }
+  }
+
+  public updateRecipeById = async (req: ICustomRequest, res: Response): Promise<Response> => {
+    try {
+      const recipe = req.recipe
+      const recipeRequest: IRecipeRequest = req.body
+
+      await this.recipeService.updateRecipeByIdService(recipe.id, recipeRequest)
+
+      return res.status(204).json({})
     } catch (error) {
       const { message } = LoggerService.errorMessageHandler(error, 'Error in get recipes by search controller')
 
