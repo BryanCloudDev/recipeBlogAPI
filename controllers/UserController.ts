@@ -1,4 +1,10 @@
-import { type IUserController, type IUserService, type ICustomRequest, type IUserRequest } from '../dto'
+import {
+  type IUserController,
+  type IUserService,
+  type ICustomRequest,
+  type IUserRequest,
+  type IUserPasswordChange
+} from '../dto'
 import { type Response, type Request } from 'express'
 import { type User } from '../models'
 import { LoggerService, Status, UserService } from '../services'
@@ -89,7 +95,7 @@ export class UserController implements IUserController {
 
   updateUserPasswordbyId = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
-      const { currentPassword, newPassword } = req.body
+      const { currentPassword, newPassword }: IUserPasswordChange = req.body
       const user = req.user
 
       const result = await this.userService.updateUserPasswordService(user, currentPassword, newPassword)

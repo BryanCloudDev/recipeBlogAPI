@@ -1,9 +1,10 @@
 import cors from 'cors'
 import express, { type Application, type Router } from 'express'
-import { type IAuthorizationRouter, type IRecipeRouter, type IUserRouter } from '../dto'
+import { type IServerMiddleWare, type IAuthorizationRouter, type IRecipeRouter, type IUserRouter } from '../dto'
 import { AuthorizationRouter, RecipeRouter, UserRouter } from '../routes'
 import { appFactory, portFactory, routeFactory } from '../services'
 import { makeDBConnection } from '../database'
+import { ServerMiddleWare } from '../middlewares'
 
 export default class Server {
   private readonly _app: Application
@@ -14,6 +15,7 @@ export default class Server {
   constructor(
     readonly authorizationRouter: IAuthorizationRouter = new AuthorizationRouter(),
     readonly recipeRouter: IRecipeRouter = new RecipeRouter(),
+    readonly serverMiddleWare: IServerMiddleWare = new ServerMiddleWare(),
     readonly userRouter: IUserRouter = new UserRouter(),
     readonly App: () => Application = appFactory,
     readonly Port: () => number = portFactory,
@@ -35,6 +37,8 @@ export default class Server {
     // JSON PARSER
 
     this._app.use(express.json())
+
+    this._app.use(this.serverMiddleWare.validateJSON)
 
     this._app.use(cors())
   }
