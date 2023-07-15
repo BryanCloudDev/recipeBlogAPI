@@ -1,7 +1,6 @@
 import { type IUserRequest, type IUserMiddleWare, type IUserService, type ICustomRequest } from '../../dto'
 import { type Request, type Response, type NextFunction } from 'express'
 import { LoggerService, Status, UserService } from '../../services'
-import { userRepository } from '../../repositories/repositories'
 
 export class UserMiddleWare implements IUserMiddleWare {
   constructor(readonly userService: IUserService = new UserService()) {}
@@ -19,7 +18,7 @@ export class UserMiddleWare implements IUserMiddleWare {
       const user = await this.userService.getUserbyIdService(id)
 
       if (user !== null && user.email !== email) {
-        const existingEmail = await userRepository.findOne({ where: { email } })
+        const existingEmail = await this.userService.getUserByEmail(email)
 
         if (existingEmail !== null) {
           return res.status(400).json({
@@ -66,6 +65,19 @@ export class UserMiddleWare implements IUserMiddleWare {
       next()
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in exists user by id middleware').message)
+    }
+  }
+
+  emailExists = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
+    try {
+      const { email }: IUserRequest = req.body
+      const user = await this.userService.getUserByEmail(email)
+      if (user !== null) {
+        return res.status(400).json({ message: `The email ${email} is already registered in DB` })
+      }
+      next()
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in exists user by email middleware').message)
     }
   }
 }

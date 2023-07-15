@@ -83,4 +83,13 @@ export class UserService implements IUserService {
 
     await this.updateUserByIdService(user.id, { password: newPasswordHash })
   }
+
+  public getUserByEmail = async (email: string): Promise<User | null> => {
+    try {
+      const user = await this.repository.user.findOne({ where: { email } })
+      return user
+    } catch (error: any) {
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in get all users service').message)
+    }
+  }
 }
