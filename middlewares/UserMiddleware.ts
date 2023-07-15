@@ -1,6 +1,6 @@
-import { type IUserRequest, type IUserMiddleWare, type IUserService, type ICustomRequest } from '../../dto'
+import { type IUserRequest, type IUserMiddleWare, type IUserService, type ICustomRequest } from '../dto'
 import { type Request, type Response, type NextFunction } from 'express'
-import { LoggerService, Status, UserService } from '../../services'
+import { LoggerService, Status, UserService } from '../services'
 
 export class UserMiddleWare implements IUserMiddleWare {
   constructor(readonly userService: IUserService = new UserService()) {}
