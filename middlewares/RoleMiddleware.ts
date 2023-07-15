@@ -1,6 +1,6 @@
 import { type IRoleService, type ICustomRequest, type IRoleMiddleWare } from '../dto'
 import { type Response, type NextFunction } from 'express'
-import { RoleService, Roles, Status } from '../services'
+import { LoggerService, RoleService, Roles, Status } from '../services'
 
 export class RoleMiddleWare implements IRoleMiddleWare {
   constructor(private readonly roleService: IRoleService = new RoleService()) {}
@@ -29,7 +29,7 @@ export class RoleMiddleWare implements IRoleMiddleWare {
       next()
     } catch (error: any) {
       next()
-      throw new Error(errorMessageHandler(error, 'Error in validate role id middleware').message)
+      throw new Error(LoggerService.errorMessageHandler(error, 'Error in validate role id middleware').message)
     }
   }
 }
