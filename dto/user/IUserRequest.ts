@@ -6,4 +6,5 @@ export interface IUserRequest {
   password: string
   photo: string
   status: number
+  role: number
 }
