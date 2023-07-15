@@ -49,7 +49,7 @@ export class UserService implements IUserService {
 
   public updateUserByIdService = async (id: number, user: Partial<IUserRequest>): Promise<void> => {
     try {
-      const { photo, password, ...userRequest } = user
+      const { photo, password, role, ...userRequest } = user
 
       const photoBuffer = this.fileService.convertFileToBuffer(photo)
 
