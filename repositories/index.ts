@@ -1,4 +1,5 @@
 export * from './IngredientRepository'
 export * from './RecipeRepository'
+export * from './RoleRepository'
 export * from './StepRepository'
 export * from './UserRespository'
