@@ -93,7 +93,7 @@ export class UserController implements IUserController {
     }
   }
 
-  updateUserPasswordbyId = async (req: ICustomRequest, res: Response): Promise<Response> => {
+  updateUserPassword = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
       const { currentPassword, newPassword }: IUserPasswordChange = req.body
       const user = req.user
