@@ -30,7 +30,7 @@ export class RecipeService implements IRecipeService {
       })
 
       const stepsInstance = steps.map(step => this.stepService.createStepInstanceService(step))
-      const ingredientsInstance = steps.map(ingredient =>
+      const ingredientsInstance = ingredients.map(ingredient =>
         this.ingredientService.createIngredientInstanceService(ingredient)
       )
 

@@ -1,10 +1,10 @@
-import { body, param } from 'express-validator'
-import { type Router } from 'express'
-import { type IUserMiddleWare, type IUserController, type IUserRouter } from '../dto'
-import { UserController } from '../controllers'
-import { Roles, routeFactory } from '../services'
-import { UserMiddleWare, validateFields, validateStatus } from '../middlewares'
 import moment from 'moment'
+import { type Router } from 'express'
+import { body, param } from 'express-validator'
+import { type IUserMiddleWare, type IUserController, type IUserRouter } from '../dto'
+import { Roles, routeFactory } from '../services'
+import { UserController } from '../controllers'
+import { UserMiddleWare, validateFields, validateStatus } from '../middlewares'
 
 export class UserRouter implements IUserRouter {
   readonly _router: Router
