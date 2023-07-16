@@ -1,9 +1,18 @@
-import { type IUserRequest, type IUserMiddleWare, type IUserService, type ICustomRequest } from '../dto'
+import {
+  type IUserRequest,
+  type IUserMiddleWare,
+  type IUserService,
+  type ICustomRequest,
+  type IFileService
+} from '../dto'
 import { type Request, type Response, type NextFunction } from 'express'
-import { LoggerService, Status, UserService } from '../services'
+import { FileService, LoggerService, Status, UserService } from '../services'
 
 export class UserMiddleWare implements IUserMiddleWare {
-  constructor(readonly userService: IUserService = new UserService()) {}
+  constructor(
+    private readonly userService: IUserService = new UserService(),
+    private readonly fileService: IFileService = new FileService()
+  ) {}
 
   validateEmailInChange = async (req: Request, res: Response, next: NextFunction): Promise<Response | undefined> => {
     try {
@@ -79,5 +88,9 @@ export class UserMiddleWare implements IUserMiddleWare {
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in exists user by email middleware').message)
     }
+  }
+
+  isAPhoto = (file: string): boolean => {
+    return this.fileService.isAPhoto(file)
   }
 }
