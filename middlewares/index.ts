@@ -1,4 +1,6 @@
 export * from './AuthenticationMiddleware'
+export * from './RoleMiddleware'
 export * from './ServerMiddleware'
 export * from './UserMiddleware'
 export * from './validateFields'
+export * from './validateStatus'
