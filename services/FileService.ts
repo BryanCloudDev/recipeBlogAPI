@@ -13,4 +13,15 @@ export class FileService implements IFileService {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in create file to buffer service').message)
     }
   }
+
+  isAPhoto = (photo: string): boolean => {
+    if (photo === undefined) {
+      return true
+    }
+    const allowedFileExtensions = ['image/jpeg', 'image/png']
+    const metaData = photo.split(';base64,')[0]
+    const fileExtension = metaData.split(':')[1]
+
+    return allowedFileExtensions.includes(fileExtension)
+  }
 }
