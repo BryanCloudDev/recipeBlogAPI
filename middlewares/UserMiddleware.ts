@@ -3,16 +3,28 @@ import {
   type IUserMiddleWare,
   type IUserService,
   type ICustomRequest,
-  type IFileService
+  type IFileService,
+  type IAuthenticationMiddleWare,
+  type IRoleMiddleWare
 } from '../dto'
 import { type Request, type Response, type NextFunction } from 'express'
-import { FileService, LoggerService, Status, UserService } from '../services'
+import { FileService, LoggerService, type Roles, Status, UserService } from '../services'
+import { type User } from '../models'
+import { AuthenticationMiddleWare, RoleMiddleWare } from '.'
 
 export class UserMiddleWare implements IUserMiddleWare {
+  readonly authenticationMiddleware: IAuthenticationMiddleWare
+  readonly roleMiddleWare: IRoleMiddleWare
+
   constructor(
-    private readonly userService: IUserService = new UserService(),
-    private readonly fileService: IFileService = new FileService()
-  ) {}
+    private readonly _authenticationMiddleware: IAuthenticationMiddleWare = new AuthenticationMiddleWare(),
+    private readonly _roleMiddleWare: IRoleMiddleWare = new RoleMiddleWare(),
+    private readonly fileService: IFileService = new FileService(),
+    private readonly userService: IUserService = new UserService()
+  ) {
+    this.authenticationMiddleware = _authenticationMiddleware
+    this.roleMiddleWare = _roleMiddleWare
+  }
 
   validateEmailInChange = async (req: Request, res: Response, next: NextFunction): Promise<Response | undefined> => {
     try {
@@ -90,7 +102,34 @@ export class UserMiddleWare implements IUserMiddleWare {
     }
   }
 
-  isAPhoto = (file: string): boolean => {
-    return this.fileService.isAPhoto(file)
+  validateRole = (roles: Roles[]) => {
+    return (req: Request, res: Response, next: NextFunction): Response | undefined => {
+      const { role } = req.user as User
+      const { id } = role
+
+      if (!roles.includes(id)) {
+        return res.status(403).json({
+          message: 'You are not authorized'
+        })
+      }
+
+      next()
+    }
+  }
+
+  validateFile = (req: Request, res: Response, next: NextFunction): Response | undefined => {
+    const { photo }: IUserRequest = req.body
+
+    if (photo === undefined) {
+      next()
+    }
+
+    if (!this.fileService.isAPhoto(photo)) {
+      return res.status(400).json({
+        message: 'JPG and PNG images are supported only, and string has to be a valid base64'
+      })
+    }
+
+    next()
   }
 }
