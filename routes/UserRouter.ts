@@ -50,7 +50,7 @@ export class UserRouter implements IUserRouter {
       '/admin',
       [
         this.userMiddleware.authenticationMiddleware.validateJWT,
-        this.userMiddleware.validateRole([Roles.ADMIN]),
+        this.userMiddleware.authenticationMiddleware.validateRole([Roles.ADMIN]),
         body('roleId').isNumeric(),
         ...this.userValidations
       ],
@@ -71,7 +71,7 @@ export class UserRouter implements IUserRouter {
       '/:id',
       [
         this.userMiddleware.authenticationMiddleware.validateJWT,
-        this.userMiddleware.validateRole([Roles.ADMIN]),
+        this.userMiddleware.authenticationMiddleware.validateRole([Roles.ADMIN]),
         param('id', 'User id must be an integer').isNumeric(),
         validateFields,
         this.userMiddleware.validateUserId,
@@ -84,7 +84,10 @@ export class UserRouter implements IUserRouter {
   private getAllUsers(): void {
     this._router.get(
       '/',
-      [this.userMiddleware.authenticationMiddleware.validateJWT, this.userMiddleware.validateRole([Roles.ADMIN])],
+      [
+        this.userMiddleware.authenticationMiddleware.validateJWT,
+        this.userMiddleware.authenticationMiddleware.validateRole([Roles.ADMIN])
+      ],
       this.userController.getAllUsers
     )
   }
@@ -94,7 +97,7 @@ export class UserRouter implements IUserRouter {
       '/:id',
       [
         this.userMiddleware.authenticationMiddleware.validateJWT,
-        this.userMiddleware.validateRole([Roles.ADMIN]),
+        this.userMiddleware.authenticationMiddleware.validateRole([Roles.ADMIN]),
         param('id', 'User id must be an integer').isNumeric(),
         validateFields,
         this.userMiddleware.validateUserId
@@ -108,7 +111,7 @@ export class UserRouter implements IUserRouter {
       '/profile',
       [
         this.userMiddleware.authenticationMiddleware.validateJWT,
-        this.userMiddleware.validateRole([Roles.ADMIN, Roles.USER])
+        this.userMiddleware.authenticationMiddleware.validateRole([Roles.ADMIN, Roles.USER])
       ],
       this.userController.getUserProfile
     )
@@ -119,7 +122,7 @@ export class UserRouter implements IUserRouter {
       '/:id',
       [
         this.userMiddleware.authenticationMiddleware.validateJWT,
-        this.userMiddleware.validateRole([Roles.ADMIN]),
+        this.userMiddleware.authenticationMiddleware.validateRole([Roles.ADMIN]),
         param('id', 'User id must be an integer').isNumeric(),
         body('email', 'The email is not valid').optional().isEmail().trim(),
         body('firstName', 'The first name is mandatory').optional().notEmpty().isString().isLength({ max: 30 }).trim(),
@@ -151,7 +154,7 @@ export class UserRouter implements IUserRouter {
       '/password-update',
       [
         this.userMiddleware.authenticationMiddleware.validateJWT,
-        this.userMiddleware.validateRole([Roles.ADMIN, Roles.USER]),
+        this.userMiddleware.authenticationMiddleware.validateRole([Roles.ADMIN, Roles.USER]),
         body('currentPassword', 'The password is mandatory and must have at least 6 characters').trim(),
         body('newPassword', 'The password is mandatory and must have at least 6 characters')
           .isLength({ min: 6 })

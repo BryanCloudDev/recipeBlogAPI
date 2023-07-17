@@ -8,8 +8,7 @@ import {
   type IRoleMiddleWare
 } from '../dto'
 import { type Request, type Response, type NextFunction } from 'express'
-import { FileService, LoggerService, type Roles, Status, UserService } from '../services'
-import { type User } from '../models'
+import { FileService, LoggerService, Status, UserService } from '../services'
 import { AuthenticationMiddleWare, RoleMiddleWare } from '.'
 
 export class UserMiddleWare implements IUserMiddleWare {
@@ -103,21 +102,6 @@ export class UserMiddleWare implements IUserMiddleWare {
       next()
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in exists user by email middleware').message)
-    }
-  }
-
-  validateRole = (roles: Roles[]) => {
-    return (req: Request, res: Response, next: NextFunction): Response | undefined => {
-      const { role } = req.user as User
-      const { id } = role
-
-      if (!roles.includes(id)) {
-        return res.status(403).json({
-          message: 'You are not authorized'
-        })
-      }
-
-      next()
     }
   }
 
