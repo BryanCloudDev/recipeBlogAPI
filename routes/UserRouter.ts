@@ -4,7 +4,7 @@ import { body, param } from 'express-validator'
 import { type IUserMiddleWare, type IUserController, type IUserRouter } from '../dto'
 import { Roles, routeFactory } from '../services'
 import { UserController } from '../controllers'
-import { UserMiddleWare, validateFields, validateStatus } from '../middlewares'
+import { UserMiddleWare, validateFields, validateFile, validateStatus } from '../middlewares'
 
 export class UserRouter implements IUserRouter {
   public readonly _router: Router
@@ -21,7 +21,7 @@ export class UserRouter implements IUserRouter {
     body('photo', 'Photo must be a valid base64 value').optional().notEmpty().isString().trim(),
     validateFields,
     this.userMiddleware.emailExists,
-    this.userMiddleware.validateFile,
+    validateFile,
     this.userMiddleware.roleMiddleWare.validateRoleId
   ]
 
@@ -139,7 +139,7 @@ export class UserRouter implements IUserRouter {
         body('photo', 'The photo must be a valid base64 string').optional().notEmpty().isString().trim(),
         body('roleId').optional().isNumeric(),
         validateFields,
-        this.userMiddleware.validateFile,
+        validateFile,
         this.userMiddleware.validateUserId,
         this.userMiddleware.validateEmailInChange,
         this.userMiddleware.roleMiddleWare.validateRoleId,

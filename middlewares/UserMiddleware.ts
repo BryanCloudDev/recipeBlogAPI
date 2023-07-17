@@ -3,12 +3,11 @@ import {
   type IUserMiddleWare,
   type IUserService,
   type ICustomRequest,
-  type IFileService,
   type IAuthenticationMiddleWare,
   type IRoleMiddleWare
 } from '../dto'
 import { type Request, type Response, type NextFunction } from 'express'
-import { FileService, LoggerService, Status, UserService } from '../services'
+import { LoggerService, Status, UserService } from '../services'
 import { AuthenticationMiddleWare, RoleMiddleWare } from '.'
 
 export class UserMiddleWare implements IUserMiddleWare {
@@ -18,7 +17,6 @@ export class UserMiddleWare implements IUserMiddleWare {
   constructor(
     private readonly _authenticationMiddleware: IAuthenticationMiddleWare = new AuthenticationMiddleWare(),
     private readonly _roleMiddleWare: IRoleMiddleWare = new RoleMiddleWare(),
-    private readonly fileService: IFileService = new FileService(),
     private readonly userService: IUserService = new UserService()
   ) {
     this.authenticationMiddleware = _authenticationMiddleware
@@ -103,22 +101,5 @@ export class UserMiddleWare implements IUserMiddleWare {
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in exists user by email middleware').message)
     }
-  }
-
-  validateFile = (req: Request, res: Response, next: NextFunction): Response | undefined => {
-    const { photo }: IUserRequest = req.body
-
-    if (photo === undefined) {
-      next()
-      return
-    }
-
-    if (!this.fileService.isAPhoto(photo)) {
-      return res.status(400).json({
-        message: 'JPG and PNG images are supported only, and string has to be a valid base64'
-      })
-    }
-
-    next()
   }
 }
