@@ -24,7 +24,7 @@ export class RecipeController implements IRecipeController {
     }
   }
 
-  public deleteRecipe = async (req: Request, res: Response): Promise<Response> => {
+  public deleteRecipeById = async (req: Request, res: Response): Promise<Response> => {
     try {
       const id = parseInt(req.params.id)
       await this.recipeService.deleteRecipebyIdService(id)
