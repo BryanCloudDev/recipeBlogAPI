@@ -7,9 +7,9 @@ import { UserController } from '../controllers'
 import { UserMiddleWare, validateFields, validateStatus } from '../middlewares'
 
 export class UserRouter implements IUserRouter {
-  readonly _router: Router
-  readonly route = '/users'
-  readonly userValidations = [
+  public readonly _router: Router
+  public readonly route = '/users'
+  private readonly userValidations = [
     body('email', 'The email is not valid').isEmail().trim(),
     body('firstName', 'The first name is mandatory').notEmpty().isString().isLength({ max: 30 }).trim(),
     body('lastName', 'The last name is mandatory').notEmpty().isString().isLength({ max: 30 }).trim(),
@@ -26,15 +26,15 @@ export class UserRouter implements IUserRouter {
   ]
 
   constructor(
-    readonly userController: IUserController = new UserController(),
-    readonly userMiddleware: IUserMiddleWare = new UserMiddleWare(),
-    readonly Router: () => Router = routeFactory
+    private readonly userController: IUserController = new UserController(),
+    private readonly userMiddleware: IUserMiddleWare = new UserMiddleWare(),
+    private readonly Router: () => Router = routeFactory
   ) {
     this._router = Router()
     this.initializeRoutes()
   }
 
-  initializeRoutes(): void {
+  public initializeRoutes(): void {
     this.createAdminUser()
     this.createUser()
     this.deleteUser()
@@ -45,7 +45,7 @@ export class UserRouter implements IUserRouter {
     this.updateUserById()
   }
 
-  createAdminUser(): void {
+  private createAdminUser(): void {
     this._router.post(
       '/admin',
       [
@@ -58,7 +58,7 @@ export class UserRouter implements IUserRouter {
     )
   }
 
-  createUser(): void {
+  private createUser(): void {
     this._router.post(
       '/',
       [body('roleId').custom(this.userMiddleware.checkIfRoleIsSent), ...this.userValidations],
@@ -66,7 +66,7 @@ export class UserRouter implements IUserRouter {
     )
   }
 
-  deleteUser(): void {
+  private deleteUser(): void {
     this._router.delete(
       '/:id',
       [
@@ -81,7 +81,7 @@ export class UserRouter implements IUserRouter {
     )
   }
 
-  getAllUsers(): void {
+  private getAllUsers(): void {
     this._router.get(
       '/',
       [this.userMiddleware.authenticationMiddleware.validateJWT, this.userMiddleware.validateRole([Roles.ADMIN])],
@@ -89,7 +89,7 @@ export class UserRouter implements IUserRouter {
     )
   }
 
-  getUserById(): void {
+  private getUserById(): void {
     this._router.get(
       '/:id',
       [
@@ -103,7 +103,7 @@ export class UserRouter implements IUserRouter {
     )
   }
 
-  getUserProfile(): void {
+  private getUserProfile(): void {
     this._router.get(
       '/profile',
       [
@@ -114,7 +114,7 @@ export class UserRouter implements IUserRouter {
     )
   }
 
-  updateUserById(): void {
+  private updateUserById(): void {
     this._router.patch(
       '/:id',
       [
@@ -146,7 +146,7 @@ export class UserRouter implements IUserRouter {
     )
   }
 
-  updateUserPassword(): void {
+  private updateUserPassword(): void {
     this._router.patch(
       '/password-update',
       [
