@@ -83,7 +83,7 @@ export class RecipeController implements IRecipeController {
 
       return res.status(204).json({})
     } catch (error) {
-      const { message } = LoggerService.errorMessageHandler(error, 'Error in get recipes by search controller')
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in update recipe by id controller')
 
       return res.status(500).json({ message })
     }
