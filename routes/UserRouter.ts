@@ -9,6 +9,21 @@ import { UserMiddleWare, validateFields, validateStatus } from '../middlewares'
 export class UserRouter implements IUserRouter {
   readonly _router: Router
   readonly route = '/users'
+  readonly userValidations = [
+    body('email', 'The email is not valid').isEmail().trim(),
+    body('firstName', 'The first name is mandatory').notEmpty().isString().isLength({ max: 30 }).trim(),
+    body('lastName', 'The last name is mandatory').notEmpty().isString().isLength({ max: 30 }).trim(),
+    body('password', 'The password is mandatory and must have at least 6 characters').isLength({ min: 6 }).trim(),
+    body('birthDate', 'The birthdate is mandatory and must be a valid date')
+      .notEmpty()
+      .isISO8601()
+      .isBefore(moment().toISOString()),
+    body('photo', 'Photo must be a valid base64 value').optional().notEmpty().isString().trim(),
+    validateFields,
+    this.userMiddleware.emailExists,
+    this.userMiddleware.validateFile,
+    this.userMiddleware.roleMiddleWare.validateRoleId
+  ]
 
   constructor(
     readonly userController: IUserController = new UserController(),
@@ -20,33 +35,33 @@ export class UserRouter implements IUserRouter {
   }
 
   initializeRoutes(): void {
+    this.createAdminUser()
     this.createUser()
     this.deleteUser()
     this.getAllUsers()
-    this.getUserById()
     this.getUserProfile()
-    this.updateUserById()
+    this.getUserById()
     this.updateUserPassword()
+    this.updateUserById()
+  }
+
+  createAdminUser(): void {
+    this._router.post(
+      '/admin',
+      [
+        this.userMiddleware.authenticationMiddleware.validateJWT,
+        this.userMiddleware.validateRole([Roles.ADMIN]),
+        body('roleId').isNumeric(),
+        ...this.userValidations
+      ],
+      this.userController.createUser
+    )
   }
 
   createUser(): void {
     this._router.post(
       '/',
-      [
-        body('email', 'The email is not valid').isEmail().trim(),
-        body('firstName', 'The first name is mandatory').notEmpty().isString().isLength({ max: 30 }).trim(),
-        body('lastName', 'The last name is mandatory').notEmpty().isString().isLength({ max: 30 }).trim(),
-        body('password', 'The password is mandatory and must have at least 6 characters').isLength({ min: 6 }).trim(),
-        body('birthDate', 'The birthdate is mandatory and must be a valid date')
-          .notEmpty()
-          .isISO8601()
-          .isBefore(moment().toISOString()),
-        body('photo', 'Photo must be a valid base64 value').optional().notEmpty().isString().trim(),
-        validateFields,
-        this.userMiddleware.emailExists,
-        this.userMiddleware.validateFile,
-        this.userMiddleware.roleMiddleWare.validateRoleId
-      ],
+      [body('roleId').custom(this.userMiddleware.checkIfRoleIsSent), ...this.userValidations],
       this.userController.createUser
     )
   }
@@ -119,7 +134,7 @@ export class UserRouter implements IUserRouter {
           .isISO8601()
           .isBefore(moment().toISOString()),
         body('photo', 'The photo must be a valid base64 string').optional().notEmpty().isString().trim(),
-        body('roleId').isNumeric(),
+        body('roleId').optional().isNumeric(),
         validateFields,
         this.userMiddleware.validateFile,
         this.userMiddleware.validateUserId,
@@ -127,7 +142,7 @@ export class UserRouter implements IUserRouter {
         this.userMiddleware.roleMiddleWare.validateRoleId,
         validateStatus
       ],
-      this.userController.getUserProfile
+      this.userController.updateUserbyId
     )
   }
 

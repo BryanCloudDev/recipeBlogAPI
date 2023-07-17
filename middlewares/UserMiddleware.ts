@@ -26,6 +26,10 @@ export class UserMiddleWare implements IUserMiddleWare {
     this.roleMiddleWare = _roleMiddleWare
   }
 
+  checkIfRoleIsSent = async (role: number): Promise<void> => {
+    if (role !== undefined) throw new Error('You are not allowed to perform this action')
+  }
+
   validateEmailInChange = async (req: Request, res: Response, next: NextFunction): Promise<Response | undefined> => {
     try {
       const { email }: IUserRequest = req.body
@@ -122,6 +126,7 @@ export class UserMiddleWare implements IUserMiddleWare {
 
     if (photo === undefined) {
       next()
+      return
     }
 
     if (!this.fileService.isAPhoto(photo)) {

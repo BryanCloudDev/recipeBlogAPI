@@ -4,6 +4,7 @@ import { type Roles } from '../../services'
 import { type IRoleMiddleWare, type IAuthenticationMiddleWare } from '..'
 
 export interface IUserMiddleWare {
+  checkIfRoleIsSent: (role: number) => Promise<void>
   emailExists: (req: ICustomRequest, res: Response, next: NextFunction) => Promise<Response | undefined>
   validateEmailInChange: (req: Request, res: Response, next: NextFunction) => Promise<Response | undefined>
   validateFile: (req: Request, res: Response, next: NextFunction) => Response | undefined

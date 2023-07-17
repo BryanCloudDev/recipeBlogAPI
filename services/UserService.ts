@@ -49,7 +49,7 @@ export class UserService implements IUserService {
 
   public updateUserByIdService = async (id: number, user: Partial<IUserRequest>): Promise<void> => {
     try {
-      const { photo, password, role, ...userRequest } = user
+      const { photo, role, ...userRequest } = user
 
       const photoBuffer = this.fileService.convertFileToBuffer(photo)
 
@@ -74,7 +74,9 @@ export class UserService implements IUserService {
     newPassword: string
   ): Promise<string | undefined> => {
     const { password } = user
+
     const resultPasswordCheck = await this.authenticationService.checkPassword(currentPassword, password)
+
     if (!resultPasswordCheck) {
       return 'Current password does not match'
     }

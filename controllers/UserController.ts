@@ -82,7 +82,7 @@ export class UserController implements IUserController {
 
   updateUserbyId = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
-      const userRequest: IUserRequest = req.body
+      const { password, ...userRequest }: IUserRequest = req.body
       const id = parseInt(req.params.id)
 
       await this.userService.updateUserByIdService(id, userRequest)
