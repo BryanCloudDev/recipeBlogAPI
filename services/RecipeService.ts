@@ -76,10 +76,16 @@ export class RecipeService implements IRecipeService {
 
       const photoBuffer = this.fileService.convertFileToBuffer(photo)
 
-      const stepsPromises = steps.map(step => this.stepService.updateStepService(step))
-      const ingredientsPromises = ingredients.map(ingredient =>
-        this.ingredientService.updateIngredientService(ingredient)
-      )
+      let stepsPromises: Array<Promise<void>> = []
+      let ingredientsPromises: Array<Promise<void>> = []
+
+      if (steps !== undefined) {
+        stepsPromises = steps.map(step => this.stepService.updateStepService(step))
+      }
+
+      if (ingredients !== undefined) {
+        ingredientsPromises = ingredients.map(ingredient => this.ingredientService.updateIngredientService(ingredient))
+      }
 
       await Promise.all([stepsPromises, ingredientsPromises])
 
