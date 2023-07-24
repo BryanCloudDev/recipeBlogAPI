@@ -3,6 +3,7 @@ import { type ICustomRequest, type IAuthenticationMiddleWare, type IUserMiddleWa
 
 export interface IRecipeMiddleWare {
   validateRecipeId: (req: ICustomRequest, res: Response, next: NextFunction) => Promise<Response | undefined>
+  validateRecipeOnDelete: (req: ICustomRequest, res: Response, next: NextFunction) => Promise<Response | undefined>
   authenticationMiddleware: IAuthenticationMiddleWare
   userMiddleware: IUserMiddleWare
 }

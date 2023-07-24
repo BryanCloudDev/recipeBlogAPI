@@ -7,7 +7,7 @@ import {
 } from '../dto'
 import { AuthenticationMiddleWare, UserMiddleWare } from '.'
 import { type Response, type NextFunction } from 'express'
-import { LoggerService, RecipeService } from '../services'
+import { LoggerService, RecipeService, Status } from '../services'
 
 export class RecipeMiddleWare implements IRecipeMiddleWare {
   readonly authenticationMiddleware: IAuthenticationMiddleWare
@@ -40,5 +40,21 @@ export class RecipeMiddleWare implements IRecipeMiddleWare {
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in exists recipe by id middleware').message)
     }
+  }
+
+  validateRecipeOnDelete = async (
+    req: ICustomRequest,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | undefined> => {
+    const recipe = req.recipe
+
+    if (recipe.status === Status.INACTIVE) {
+      return res.status(400).json({
+        message: `The recipe has been marked already as inactive`
+      })
+    }
+
+    next()
   }
 }
