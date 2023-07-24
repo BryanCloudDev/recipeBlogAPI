@@ -113,7 +113,8 @@ export class UserRouter implements IUserRouter {
         this.userMiddleware.authenticationMiddleware.validateRole([Roles.ADMIN]),
         param('id', 'User id must be an integer').isNumeric(),
         validateFields,
-        this.userMiddleware.validateUserId
+        this.userMiddleware.validateUserId,
+        this.userMiddleware.validateUserOnDelete
       ],
       this.userController.getUserById
     )
