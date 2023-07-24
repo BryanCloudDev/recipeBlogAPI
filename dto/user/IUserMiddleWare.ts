@@ -3,7 +3,6 @@ import { type NextFunction, type Request, type Response } from 'express'
 import { type IRoleMiddleWare, type IAuthenticationMiddleWare } from '..'
 
 export interface IUserMiddleWare {
-  checkIfRoleIsSent: (role: number) => Promise<void>
   emailExists: (req: ICustomRequest, res: Response, next: NextFunction) => Promise<Response | undefined>
   validateEmailInChange: (req: Request, res: Response, next: NextFunction) => Promise<Response | undefined>
   validateUserId: (req: ICustomRequest, res: Response, next: NextFunction) => Promise<Response | undefined>
