@@ -67,7 +67,7 @@ export class UserController implements IUserController {
 
   getUserProfile = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
-      const { role, ...user }: User = req.user
+      const { role, password, updatedOn, ...user }: User = req.user
       const { id } = role
 
       return res.status(200).json({
