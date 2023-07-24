@@ -25,15 +25,14 @@ export class RecipeController implements IRecipeController {
     }
   }
 
-  public deleteRecipeById = async (req: Request, res: Response): Promise<Response> => {
+  public deleteRecipeById = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
-      const id = parseInt(req.params.id)
-      await this.recipeService.deleteRecipebyIdService(id)
+      const recipe = req.recipe
+      await this.recipeService.deleteRecipebyIdService(recipe.id)
 
-      return res.status(204).json()
+      return res.status(204).json({})
     } catch (error: any) {
       const { message } = LoggerService.errorMessageHandler(error, 'Error in delete recipe by id controller')
-
       return res.status(500).json({ message })
     }
   }
@@ -50,11 +49,9 @@ export class RecipeController implements IRecipeController {
     }
   }
 
-  public getRecipeById = async (req: Request, res: Response): Promise<Response> => {
+  public getRecipeById = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
-      const id = parseInt(req.params.id)
-      const recipe = await this.recipeService.getRecipebyIdService(id)
-
+      const recipe = req.recipe
       return res.status(200).json(recipe)
     } catch (error) {
       const { message } = LoggerService.errorMessageHandler(error, 'Error in get recipe by id controller')
@@ -81,7 +78,6 @@ export class RecipeController implements IRecipeController {
     try {
       const recipe = req.recipe
       const recipeRequest: IRecipeRequest = req.body
-
       await this.recipeService.updateRecipeByIdService(recipe.id, recipeRequest)
 
       return res.status(204).json({})
