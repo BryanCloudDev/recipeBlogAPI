@@ -2,6 +2,7 @@ import { type IRecipeController, type IRecipeService, type IRecipeRequest, type 
 import { type Response, type Request } from 'express'
 import { type User } from '../models'
 import { LoggerService, RecipeService } from '../services'
+import { matchedData } from 'express-validator'
 
 export class RecipeController implements IRecipeController {
   constructor(private readonly recipeService: IRecipeService = new RecipeService()) {}
@@ -64,7 +65,9 @@ export class RecipeController implements IRecipeController {
 
   public getRecipesByText = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const { search } = req.params
+      const data = matchedData(req)
+      const { search } = data
+
       const recipes = await this.recipeService.getRecipesBySearchService(search)
       return res.status(200).json(recipes)
     } catch (error) {

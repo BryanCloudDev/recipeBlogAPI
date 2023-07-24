@@ -3,7 +3,7 @@ import { type Router } from 'express'
 import { RecipeController } from '../controllers'
 import { Roles, routeFactory } from '../services'
 import { RecipeMiddleWare, validateFields, validateFile } from '../middlewares'
-import { body, checkExact, param } from 'express-validator'
+import { body, checkExact, param, query } from 'express-validator'
 
 export class RecipeRouter implements IRecipeRouter {
   public readonly _router: Router
@@ -85,7 +85,11 @@ export class RecipeRouter implements IRecipeRouter {
   }
 
   private getRecipesBySearch(): void {
-    this._router.get('/search', this.recipeController.getRecipesByText)
+    this._router.get(
+      '/search',
+      [query('search', 'Search query cannot be empty').notEmpty().escape().trim(), validateFields],
+      this.recipeController.getRecipesByText
+    )
   }
 
   private updateRecipeById(): void {
