@@ -3,7 +3,7 @@ import { type Router } from 'express'
 import { RecipeController } from '../controllers'
 import { Roles, routeFactory } from '../services'
 import { RecipeMiddleWare, validateFields, validateFile } from '../middlewares'
-import { body, checkExact } from 'express-validator'
+import { body, checkExact, param } from 'express-validator'
 
 export class RecipeRouter implements IRecipeRouter {
   public readonly _router: Router
@@ -57,7 +57,17 @@ export class RecipeRouter implements IRecipeRouter {
   }
 
   private deleteRecipeById(): void {
-    this._router.delete('/:id', this.recipeController.deleteRecipeById)
+    this._router.delete(
+      '/:id',
+      [
+        this.recipeMiddleWare.authenticationMiddleware.validateJWT,
+        this.recipeMiddleWare.authenticationMiddleware.validateRole([Roles.ADMIN]),
+        param('id', 'Recipe id must be an integer').isNumeric(),
+        validateFields,
+        this.recipeMiddleWare.validateRecipeId
+      ],
+      this.recipeController.deleteRecipeById
+    )
   }
 
   private getRecipeById(): void {
@@ -74,6 +84,7 @@ export class RecipeRouter implements IRecipeRouter {
       [
         this.recipeMiddleWare.authenticationMiddleware.validateJWT,
         this.recipeMiddleWare.authenticationMiddleware.validateRole([Roles.ADMIN]),
+        param('id', 'Recipe id must be an integer').isNumeric(),
         checkExact([...this.recipeValidations.map(validation => validation.optional())], {
           message: 'Too many fields specified'
         }),
