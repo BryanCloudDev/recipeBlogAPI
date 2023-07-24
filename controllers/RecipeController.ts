@@ -1,7 +1,7 @@
 import { type IRecipeController, type IRecipeService, type IRecipeRequest, type ICustomRequest } from '../dto'
 import { type Response, type Request } from 'express'
 import { type User } from '../models'
-import { LoggerService, RecipeService } from '../services'
+import { LoggerService, RecipeService, Status } from '../services'
 import { matchedData } from 'express-validator'
 
 export class RecipeController implements IRecipeController {
@@ -28,7 +28,7 @@ export class RecipeController implements IRecipeController {
   public deleteRecipeById = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
       const recipe = req.recipe
-      await this.recipeService.deleteRecipebyIdService(recipe.id)
+      await this.recipeService.updateRecipeByIdService(recipe.id, { status: Status.INACTIVE })
 
       return res.status(204).json({})
     } catch (error: any) {

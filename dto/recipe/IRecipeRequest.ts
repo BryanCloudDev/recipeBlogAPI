@@ -6,4 +6,5 @@ export interface IRecipeRequest {
   photo: string
   steps: IStepRequest[]
   title: string
+  status: number
 }
