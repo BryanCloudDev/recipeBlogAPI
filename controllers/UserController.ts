@@ -30,7 +30,7 @@ export class UserController implements IUserController {
     }
   }
 
-  deleteUser = async (req: Request, res: Response): Promise<Response> => {
+  deleteUserById = async (req: Request, res: Response): Promise<Response> => {
     try {
       const id = parseInt(req.params.id)
 

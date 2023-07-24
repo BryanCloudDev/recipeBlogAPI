@@ -90,7 +90,7 @@ export class UserRouter implements IUserRouter {
         this.userMiddleware.validateUserId,
         this.userMiddleware.validateUserOnDelete
       ],
-      this.userController.deleteUser
+      this.userController.deleteUserById
     )
   }
 
