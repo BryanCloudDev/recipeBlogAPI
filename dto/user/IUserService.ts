@@ -6,7 +6,7 @@ export interface IUserService {
   createUserService: (user: User) => Promise<User>
   getAllUsersService: () => Promise<User[]>
   getUserbyIdService: (id: number) => Promise<User | null>
-  updateUserByIdService: (id: number, user: Partial<IUserRequest>) => Promise<void>
+  updateUserByIdService: (id: number, user: Partial<IUserRequest>, role?: Role) => Promise<void>
   updateUserPasswordService: (user: User, currentPassword: string, newPassword: string) => Promise<string | undefined>
   getUserByEmail: (email: string) => Promise<User | null>
 }

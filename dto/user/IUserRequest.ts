@@ -1,10 +1,10 @@
 export interface IUserRequest {
-  firstName: string
-  lastName: string
   birthDate: Date
   email: string
+  firstName: string
+  lastName: string
   password: string
   photo: string
+  roleId: number
   status: number
-  role: number
 }

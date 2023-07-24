@@ -13,12 +13,16 @@ export class UserRouter implements IUserRouter {
     body('email', 'The email is not valid').isEmail().trim(),
     body('firstName', 'The first name is mandatory').notEmpty().isString().isLength({ max: 30 }).trim(),
     body('lastName', 'The last name is mandatory').notEmpty().isString().isLength({ max: 30 }).trim(),
-    body('password', 'The password is mandatory and must have at least 6 characters').isLength({ min: 6 }).trim(),
     body('birthDate', 'The birthdate is mandatory and must be a valid date')
       .notEmpty()
       .isISO8601()
       .isBefore(moment().toISOString()),
     body('photo', 'Photo must be a valid base64 value').optional().notEmpty().isString().trim()
+  ]
+
+  private readonly userValidationsCreate = [
+    ...this.userValidations,
+    body('password', 'The password is mandatory and must have at least 6 characters').isLength({ min: 6 }).trim()
   ]
 
   constructor(
@@ -47,7 +51,7 @@ export class UserRouter implements IUserRouter {
       [
         this.userMiddleware.authenticationMiddleware.validateJWT,
         this.userMiddleware.authenticationMiddleware.validateRole([Roles.ADMIN]),
-        checkExact([...this.userValidations, body('roleId').isNumeric()], {
+        checkExact([...this.userValidationsCreate, body('roleId').isNumeric()], {
           message: 'Too many fields specified'
         }),
         validateFields,
@@ -63,7 +67,7 @@ export class UserRouter implements IUserRouter {
     this._router.post(
       '/',
       [
-        checkExact([...this.userValidations], {
+        checkExact([...this.userValidationsCreate], {
           message: 'Too many fields specified'
         }),
         validateFields,
@@ -134,7 +138,11 @@ export class UserRouter implements IUserRouter {
         this.userMiddleware.authenticationMiddleware.validateRole([Roles.ADMIN]),
         param('id', 'User id must be an integer').isNumeric(),
         checkExact(
-          [...this.userValidations.map(validation => validation.optional()), body('roleId').optional().isNumeric()],
+          [
+            ...this.userValidations.map(validation => validation.optional()),
+            body('roleId').optional().isNumeric(),
+            body('status').optional().isNumeric()
+          ],
           {
             message: 'Too many fields specified'
           }

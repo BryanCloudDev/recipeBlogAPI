@@ -82,10 +82,10 @@ export class UserController implements IUserController {
 
   updateUserbyId = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
-      const { password, ...userRequest }: IUserRequest = req.body
-      const id = parseInt(req.params.id)
+      const { ...userRequest }: IUserRequest = req.body
+      const { role, user } = req
 
-      await this.userService.updateUserByIdService(id, userRequest)
+      await this.userService.updateUserByIdService(user.id, userRequest, role)
       return res.status(204).json({})
     } catch (error: any) {
       const { message } = LoggerService.errorMessageHandler(error, 'Error in update user profile controller')
