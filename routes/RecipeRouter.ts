@@ -72,7 +72,16 @@ export class RecipeRouter implements IRecipeRouter {
   }
 
   private getRecipeById(): void {
-    this._router.get('/:id', this.recipeController.getRecipeById)
+    this._router.get(
+      '/:id',
+      [
+        param('id', 'Recipe id must be an integer').isNumeric(),
+        validateFields,
+        this.recipeMiddleWare.validateRecipeId,
+        this.recipeMiddleWare.validateRecipeOnDelete
+      ],
+      this.recipeController.getRecipeById
+    )
   }
 
   private getRecipesBySearch(): void {
