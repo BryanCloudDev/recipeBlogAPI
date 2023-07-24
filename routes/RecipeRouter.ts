@@ -64,7 +64,8 @@ export class RecipeRouter implements IRecipeRouter {
         this.recipeMiddleWare.authenticationMiddleware.validateRole([Roles.ADMIN]),
         param('id', 'Recipe id must be an integer').isNumeric(),
         validateFields,
-        this.recipeMiddleWare.validateRecipeId
+        this.recipeMiddleWare.validateRecipeId,
+        this.recipeMiddleWare.validateRecipeOnDelete
       ],
       this.recipeController.deleteRecipeById
     )

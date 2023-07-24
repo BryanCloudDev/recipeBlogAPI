@@ -7,7 +7,7 @@ import {
   type IRecipeRepository
 } from '../dto'
 import { type User, type Recipe } from '../models'
-import { FileService, IngredientService, LoggerService, StepService } from './'
+import { FileService, IngredientService, LoggerService, Status, StepService } from './'
 import { RecipeRepository } from '../repositories'
 
 export class RecipeService implements IRecipeService {
@@ -106,7 +106,7 @@ export class RecipeService implements IRecipeService {
 
   public deleteRecipebyIdService = async (id: number): Promise<void> => {
     try {
-      await this.repository.recipe.delete(id)
+      await this.repository.recipe.update(id, { status: Status.INACTIVE })
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in delete recipe by id service').message)
     }
