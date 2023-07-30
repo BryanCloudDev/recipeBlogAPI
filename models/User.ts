@@ -36,8 +36,8 @@ export class User {
   @Column({ nullable: true })
   lastLogin: Date
 
-  @Column('mediumblob', { default: null })
-  photo: Buffer
+  @Column({ default: null })
+  photo: string
 
   @OneToMany(() => Recipe, recipe => recipe.user)
   recipes: Recipe[]

@@ -24,8 +24,8 @@ export class Recipe {
   @Column({ default: 1 })
   status: number
 
-  @Column('mediumblob', { nullable: false })
-  photo: Buffer
+  @Column({ nullable: false })
+  photo: string
 
   @ManyToOne(() => User, user => user.recipes)
   user: User
