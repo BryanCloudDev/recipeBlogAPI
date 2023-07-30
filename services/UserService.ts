@@ -18,11 +18,15 @@ export class UserService implements IUserService {
 
   public createUserInstanceService = async (userRequest: IUserRequest, role: Role): Promise<User> => {
     try {
-      const { photo } = userRequest
-      const photoBuffer = this.fileService.convertFileToBuffer(photo)
+      // const { photo } = userRequest
+      // const photoBuffer = this.fileService.convertFileToBuffer(photo)
 
       userRequest.password = await this.authenticationService.encrypt(userRequest.password)
-      const user = this.repository.user.create({ ...userRequest, role, photo: photoBuffer })
+      const user = this.repository.user.create({
+        ...userRequest,
+        role
+        // photo: photoBuffer
+      })
       return user
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in create user instance service').message)
@@ -51,9 +55,12 @@ export class UserService implements IUserService {
     try {
       const { photo, roleId, ...userRequest } = user
 
-      const photoBuffer = this.fileService.convertFileToBuffer(photo)
+      // const photoBuffer = this.fileService.convertFileToBuffer(photo)
 
-      await this.repository.user.update(id, { ...userRequest, photo: photoBuffer, role })
+      await this.repository.user.update(id, {
+        ...userRequest
+        // photo: photoBuffer, role
+      })
     } catch (error: any) {
       console.log(error)
 
