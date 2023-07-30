@@ -27,6 +27,7 @@ module.exports = {
     "@typescript-eslint/no-useless-constructor": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/no-floating-promises": "off",
-    "@typescript-eslint/promise-function-async": "off"
+    "@typescript-eslint/promise-function-async": "off",
+    "@typescript-eslint/naming-convention": "off"
   }
 }
