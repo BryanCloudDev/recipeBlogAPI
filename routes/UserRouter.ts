@@ -16,8 +16,7 @@ export class UserRouter implements IUserRouter {
     body('birthDate', 'The birthdate is mandatory and must be a valid date')
       .notEmpty()
       .isISO8601()
-      .isBefore(moment().toISOString()),
-    body('photo', 'Photo must be a valid base64 value').optional().notEmpty().isString().trim()
+      .isBefore(moment().toISOString())
   ]
 
   private readonly userValidationsCreate = [

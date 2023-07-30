@@ -11,7 +11,6 @@ export class RecipeRouter implements IRecipeRouter {
   private readonly recipeValidations = [
     body('title', 'The title is required').notEmpty().isString().trim(),
     body('description', 'The description is required').notEmpty().isString().trim(),
-    body('photo', 'The photo must be a valid base64 value').notEmpty().isString().trim(),
     body('steps', 'Steps must be a valid array').isArray({ min: 1 }),
     body('steps.*.order', 'The order is required in step object').notEmpty().isInt(),
     body('steps.*.title', 'The title is required in step object').notEmpty().isString(),
