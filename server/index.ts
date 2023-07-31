@@ -2,7 +2,7 @@ import cors from 'cors'
 import express, { type Application, type Router } from 'express'
 import { type IServerMiddleWare, type IAuthorizationRouter, type IRecipeRouter, type IUserRouter } from '../dto'
 import { AuthorizationRouter, RecipeRouter, UserRouter } from '../routes'
-import { appFactory, portFactory, routeFactory } from '../services'
+import { Routes, appFactory, portFactory, routeFactory } from '../services'
 import { makeDBConnection } from '../database'
 import { ServerMiddleWare } from '../middlewares'
 
@@ -10,7 +10,7 @@ export default class Server {
   private readonly _app: Application
   private readonly _port: number
   private readonly _router: Router
-  private readonly route = '/api'
+  private readonly route = `/${Routes.API}`
 
   constructor(
     readonly authorizationRouter: IAuthorizationRouter = new AuthorizationRouter(),
