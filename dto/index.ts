@@ -1,3 +1,4 @@
+export * from './EntityType'
 export * from './ICustomRequest'
 export * from './IFileService'
 export * from './IFilter'
