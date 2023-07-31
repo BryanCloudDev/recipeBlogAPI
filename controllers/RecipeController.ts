@@ -28,8 +28,8 @@ export class RecipeController implements IRecipeController {
 
   public deleteRecipeById = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
-      const recipe = req.recipe
-      await this.recipeService.updateRecipeByIdService(recipe.id, { status: Status.INACTIVE })
+      const { id } = req.recipe
+      await this.recipeService.updateRecipeByIdService(id, { status: Status.INACTIVE })
 
       return res.status(204).json({})
     } catch (error: any) {
@@ -77,9 +77,9 @@ export class RecipeController implements IRecipeController {
 
   public updateRecipeById = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
-      const recipe = req.recipe
+      const { id } = req.recipe
       const recipeRequest: IRecipeRequest = req.body
-      await this.recipeService.updateRecipeByIdService(recipe.id, recipeRequest)
+      await this.recipeService.updateRecipeByIdService(id, recipeRequest)
 
       return res.status(204).json({})
     } catch (error) {
@@ -94,6 +94,7 @@ export class RecipeController implements IRecipeController {
       if (req.file !== undefined) {
         const { id } = req.recipe
         const { filename } = req.file
+
         const { path, url } = buildURLForFile(Routes.RECIPES, filename)
 
         await this.recipeService.updateRecipeByIdService(id, { photo: path })
