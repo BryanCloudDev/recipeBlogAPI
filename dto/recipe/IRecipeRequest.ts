@@ -5,5 +5,6 @@ export interface IRecipeRequest {
   ingredients: IIngredientRequest[]
   steps: IStepRequest[]
   title: string
+  photo: string
   status: number
 }
