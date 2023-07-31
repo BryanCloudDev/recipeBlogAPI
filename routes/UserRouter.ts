@@ -4,7 +4,7 @@ import { body, checkExact, param } from 'express-validator'
 import { type IUserMiddleWare, type IUserController, type IUserRouter } from '../dto'
 import { __dirname, Roles, Routes, routeFactory } from '../services'
 import { UserController } from '../controllers'
-import { UserMiddleWare, validateFields, validateStatus } from '../middlewares'
+import { UserMiddleWare, validateFields, validateQuery, validateStatus } from '../middlewares'
 import path from 'path'
 
 export class UserRouter implements IUserRouter {
@@ -99,7 +99,8 @@ export class UserRouter implements IUserRouter {
       '/',
       [
         this.userMiddleware.authenticationMiddleware.validateJWT,
-        this.userMiddleware.authenticationMiddleware.validateRole([Roles.ADMIN])
+        this.userMiddleware.authenticationMiddleware.validateRole([Roles.ADMIN]),
+        validateQuery
       ],
       this.userController.getAllUsers
     )
