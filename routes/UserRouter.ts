@@ -190,7 +190,11 @@ export class UserRouter implements IUserRouter {
   }
 
   private staticFiles(): void {
-    this._router.use(express.static(path.join(__dirname, 'files')))
+    this._router.use([
+      this.userMiddleware.authenticationMiddleware.validateJWT,
+      this.userMiddleware.authenticationMiddleware.validateRole([Roles.ADMIN, Roles.USER]),
+      express.static(path.join(__dirname, 'files'))
+    ])
   }
 
   public get router(): Router {
