@@ -19,10 +19,11 @@ export class UserController implements IUserController {
       const role = req.role
 
       const userInstance = await this.userService.createUserInstanceService(userRequest, role)
-      await this.userService.createUserService(userInstance)
+      const id = await this.userService.createUserService(userInstance)
 
       return res.status(201).json({
-        message: 'Successfully created'
+        message: 'Successfully created',
+        id
       })
     } catch (error: any) {
       const { message } = LoggerService.errorMessageHandler(error, 'Error in create user controller')
