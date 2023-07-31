@@ -1,4 +1,5 @@
 export * from './AuthenticationMiddleware'
+export * from './FileMiddleWare'
 export * from './RecipeMiddleWare'
 export * from './RoleMiddleware'
 export * from './ServerMiddleware'

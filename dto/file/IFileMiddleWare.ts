@@ -1,5 +1,6 @@
-import { type RequestHandler } from 'express'
+import { type Request, type Response, type NextFunction, type RequestHandler } from 'express'
 
 export interface IFileMiddleWare {
-  userConfigMulter: RequestHandler
+  configMulter: RequestHandler
+  validateFile: (req: Request, res: Response, next: NextFunction) => void
 }
