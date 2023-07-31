@@ -1,13 +1,14 @@
 import { type IRecipeRouter, type IRecipeController, type IRecipeMiddleWare } from '../dto'
-import { type Router } from 'express'
+import express, { type Router } from 'express'
 import { RecipeController } from '../controllers'
-import { Roles, routeFactory } from '../services'
+import { Roles, routeFactory, __dirname, Routes } from '../services'
 import { RecipeMiddleWare, validateFields, validateFile } from '../middlewares'
 import { body, checkExact, param, query } from 'express-validator'
+import path from 'path'
 
 export class RecipeRouter implements IRecipeRouter {
   public readonly _router: Router
-  public readonly route = '/recipes'
+  public readonly route = `/${Routes.RECIPES}`
   private readonly recipeValidations = [
     body('title', 'The title is required').notEmpty().isString().trim(),
     body('description', 'The description is required').notEmpty().isString().trim(),
@@ -35,6 +36,8 @@ export class RecipeRouter implements IRecipeRouter {
     this.getRecipesBySearch()
     this.getRecipeById()
     this.updateRecipeById()
+    this.uploadPhoto()
+    this.staticFiles()
   }
 
   private createRecipe(): void {
@@ -44,8 +47,7 @@ export class RecipeRouter implements IRecipeRouter {
         this.recipeMiddleWare.authenticationMiddleware.validateJWT,
         this.recipeMiddleWare.authenticationMiddleware.validateRole([Roles.ADMIN]),
         checkExact([...this.recipeValidations], { message: 'Too many fields specified' }),
-        validateFields,
-        validateFile
+        validateFields
       ],
       this.recipeController.createRecipe
     )
@@ -107,6 +109,25 @@ export class RecipeRouter implements IRecipeRouter {
       ],
       this.recipeController.updateRecipeById
     )
+  }
+
+  private uploadPhoto(): void {
+    this._router.patch(
+      '/upload/:id',
+      [
+        this.recipeMiddleWare.authenticationMiddleware.validateJWT,
+        this.recipeMiddleWare.authenticationMiddleware.validateRole([Roles.ADMIN]),
+        param('id', 'Recipe id must be an integer').isNumeric(),
+        validateFields,
+        this.recipeMiddleWare.validateRecipeId,
+        this.recipeMiddleWare.fileMiddleWare.validateFile
+      ],
+      this.recipeController.uploadPhoto
+    )
+  }
+
+  private staticFiles(): void {
+    this._router.use(express.static(path.join(__dirname, 'files')))
   }
 
   public get router(): Router {
