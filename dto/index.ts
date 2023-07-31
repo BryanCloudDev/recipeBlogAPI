@@ -1,5 +1,6 @@
 export * from './ICustomRequest'
 export * from './IFileService'
+export * from './IFilter'
 export * from './IPassportService'
 export * from './IRouterBase'
 export * from './IServerMiddleWare'

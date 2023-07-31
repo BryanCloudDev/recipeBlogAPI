@@ -1,6 +1,6 @@
 import { type IRecipeController, type IRecipeService, type IRecipeRequest, type ICustomRequest } from '../dto'
 import { type Response, type Request } from 'express'
-import { type User } from '../models'
+import { type Recipe, type User } from '../models'
 import { LoggerService, RecipeService, Routes, Status } from '../services'
 import { matchedData } from 'express-validator'
 
@@ -26,7 +26,7 @@ export class RecipeController implements IRecipeController {
     }
   }
 
-  public deleteRecipeById = async (req: ICustomRequest, res: Response): Promise<Response> => {
+  public deleteRecipeById = async (req: ICustomRequest<Recipe>, res: Response): Promise<Response> => {
     try {
       const { id, photo } = req.recipe
       await this.recipeService.updateRecipeByIdService(id, { status: Status.INACTIVE, photo: '' })
@@ -39,8 +39,13 @@ export class RecipeController implements IRecipeController {
     }
   }
 
-  public getAllRecipes = async (req: Request, res: Response): Promise<Response> => {
+  public getAllRecipes = async (req: ICustomRequest<Recipe>, res: Response): Promise<Response> => {
     try {
+      const { filter } = req
+      if (filter !== undefined) {
+        console.log(filter)
+      }
+
       const recipes = await this.recipeService.getAllRecipesService()
 
       return res.status(200).json(recipes)
@@ -51,7 +56,7 @@ export class RecipeController implements IRecipeController {
     }
   }
 
-  public getRecipeById = async (req: ICustomRequest, res: Response): Promise<Response> => {
+  public getRecipeById = async (req: ICustomRequest<Recipe>, res: Response): Promise<Response> => {
     try {
       const recipe = req.recipe
       return res.status(200).json(recipe)
@@ -76,7 +81,7 @@ export class RecipeController implements IRecipeController {
     }
   }
 
-  public updateRecipeById = async (req: ICustomRequest, res: Response): Promise<Response> => {
+  public updateRecipeById = async (req: ICustomRequest<Recipe>, res: Response): Promise<Response> => {
     try {
       const { id } = req.recipe
       const recipeRequest: IRecipeRequest = req.body
@@ -90,7 +95,7 @@ export class RecipeController implements IRecipeController {
     }
   }
 
-  public uploadPhoto = async (req: ICustomRequest, res: Response): Promise<Response> => {
+  public uploadPhoto = async (req: ICustomRequest<Recipe>, res: Response): Promise<Response> => {
     try {
       if (req.file !== undefined) {
         const { id, photo } = req.recipe

@@ -9,6 +9,7 @@ import {
 import { AuthenticationMiddleWare, FileMiddleWare, UserMiddleWare } from '.'
 import { type Response, type NextFunction } from 'express'
 import { LoggerService, RecipeService, Routes, Status } from '../services'
+import { type Recipe } from '../models'
 
 export class RecipeMiddleWare implements IRecipeMiddleWare {
   readonly authenticationMiddleware: IAuthenticationMiddleWare
@@ -26,7 +27,11 @@ export class RecipeMiddleWare implements IRecipeMiddleWare {
     this.fileMiddleWare = _fileMiddleWare
   }
 
-  validateRecipeId = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
+  validateRecipeId = async (
+    req: ICustomRequest<Recipe>,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | undefined> => {
     try {
       const id = parseInt(req.params.id)
 
@@ -47,7 +52,7 @@ export class RecipeMiddleWare implements IRecipeMiddleWare {
   }
 
   validateRecipeOnDelete = async (
-    req: ICustomRequest,
+    req: ICustomRequest<Recipe>,
     res: Response,
     next: NextFunction
   ): Promise<Response | undefined> => {

@@ -12,7 +12,7 @@ import { LoggerService, Routes, Status, UserService } from '../services'
 export class UserController implements IUserController {
   constructor(readonly userService: IUserService = new UserService()) {}
 
-  createUser = async (req: ICustomRequest, res: Response): Promise<Response> => {
+  createUser = async (req: ICustomRequest<User>, res: Response): Promise<Response> => {
     try {
       const { ...userRequest }: IUserRequest = req.body
 
@@ -67,7 +67,7 @@ export class UserController implements IUserController {
     }
   }
 
-  getUserProfile = async (req: ICustomRequest, res: Response): Promise<Response> => {
+  getUserProfile = async (req: ICustomRequest<User>, res: Response): Promise<Response> => {
     try {
       const { role, password, updatedOn, ...user }: User = req.user
       const { id } = role
@@ -82,7 +82,7 @@ export class UserController implements IUserController {
     }
   }
 
-  updateUserbyId = async (req: ICustomRequest, res: Response): Promise<Response> => {
+  updateUserbyId = async (req: ICustomRequest<User>, res: Response): Promise<Response> => {
     try {
       const { ...userRequest }: IUserRequest = req.body
       const { role, user } = req
@@ -95,7 +95,7 @@ export class UserController implements IUserController {
     }
   }
 
-  updateUserPassword = async (req: ICustomRequest, res: Response): Promise<Response> => {
+  updateUserPassword = async (req: ICustomRequest<User>, res: Response): Promise<Response> => {
     try {
       const { currentPassword, newPassword }: IUserPasswordChange = req.body
       const user = req.user
@@ -109,7 +109,7 @@ export class UserController implements IUserController {
     }
   }
 
-  public uploadPhoto = async (req: ICustomRequest, res: Response): Promise<Response> => {
+  public uploadPhoto = async (req: ICustomRequest<User>, res: Response): Promise<Response> => {
     try {
       if (req.file !== undefined) {
         const { id, photo } = req.user

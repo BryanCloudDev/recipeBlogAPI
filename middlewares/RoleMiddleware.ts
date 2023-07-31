@@ -1,11 +1,16 @@
 import { type IRoleService, type ICustomRequest, type IRoleMiddleWare } from '../dto'
 import { type Response, type NextFunction } from 'express'
 import { LoggerService, RoleService, Roles, Status } from '../services'
+import { type User } from '../models'
 
 export class RoleMiddleWare implements IRoleMiddleWare {
   constructor(private readonly roleService: IRoleService = new RoleService()) {}
 
-  validateRoleId = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
+  validateRoleId = async (
+    req: ICustomRequest<User>,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | undefined> => {
     try {
       const roleSent: number = req.body.roleId ?? req.params.id
       const id = roleSent ?? Roles.USER

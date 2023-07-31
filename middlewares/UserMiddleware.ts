@@ -10,6 +10,7 @@ import {
 import { type Request, type Response, type NextFunction } from 'express'
 import { LoggerService, Routes, Status, UserService } from '../services'
 import { AuthenticationMiddleWare, FileMiddleWare, RoleMiddleWare } from '.'
+import { type User } from '../models'
 
 export class UserMiddleWare implements IUserMiddleWare {
   readonly authenticationMiddleware: IAuthenticationMiddleWare
@@ -55,7 +56,7 @@ export class UserMiddleWare implements IUserMiddleWare {
   }
 
   validateUserOnDelete = async (
-    req: ICustomRequest,
+    req: ICustomRequest<User>,
     res: Response,
     next: NextFunction
   ): Promise<Response | undefined> => {
@@ -70,7 +71,11 @@ export class UserMiddleWare implements IUserMiddleWare {
     next()
   }
 
-  validateUserId = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
+  validateUserId = async (
+    req: ICustomRequest<User>,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | undefined> => {
     try {
       const id = parseInt(req.params.id)
 
@@ -90,7 +95,7 @@ export class UserMiddleWare implements IUserMiddleWare {
     }
   }
 
-  emailExists = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
+  emailExists = async (req: ICustomRequest<User>, res: Response, next: NextFunction): Promise<Response | undefined> => {
     try {
       const { email }: IUserRequest = req.body
       const user = await this.userService.getUserByEmail(email)
