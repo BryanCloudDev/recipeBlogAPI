@@ -22,11 +22,8 @@ export class RecipeService implements IRecipeService {
     try {
       const { ingredients, steps, ...recipe } = recipeRequest
 
-      // const photoBuffer = this.fileService.convertFileToBuffer(photo)
-
       const userInstance = this.repository.recipe.create({
         ...recipe
-        // photo: photoBuffer
       })
 
       const stepsInstance = steps.map(step => this.stepService.createStepInstanceService(step))
@@ -76,8 +73,6 @@ export class RecipeService implements IRecipeService {
     try {
       const { steps, ingredients, ...recipeRequest } = recipe
 
-      // const photoBuffer = this.fileService.convertFileToBuffer(photo)
-
       let stepsPromises: Array<Promise<void>> = []
       let ingredientsPromises: Array<Promise<void>> = []
 
@@ -93,7 +88,6 @@ export class RecipeService implements IRecipeService {
 
       await this.repository.recipe.update(id, {
         ...recipeRequest
-        //  photo: photoBuffer
       })
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in update recipe by id service').message)
