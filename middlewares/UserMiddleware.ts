@@ -18,7 +18,7 @@ export class UserMiddleWare implements IUserMiddleWare {
 
   constructor(
     private readonly _authenticationMiddleware: IAuthenticationMiddleWare = new AuthenticationMiddleWare(),
-    private readonly _fileMiddleWare: IFileMiddleWare = new FileMiddleWare(Routes.RECIPES),
+    private readonly _fileMiddleWare: IFileMiddleWare = new FileMiddleWare(Routes.USERS),
     private readonly _roleMiddleWare: IRoleMiddleWare = new RoleMiddleWare(),
     private readonly userService: IUserService = new UserService()
   ) {
