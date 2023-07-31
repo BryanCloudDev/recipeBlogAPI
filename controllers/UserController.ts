@@ -32,9 +32,10 @@ export class UserController implements IUserController {
 
   deleteUserById = async (req: Request, res: Response): Promise<Response> => {
     try {
-      const id = parseInt(req.params.id)
+      const { id, photo } = req.user as User
 
-      await this.userService.updateUserByIdService(id, { status: Status.INACTIVE })
+      await this.userService.updateUserByIdService(id, { status: Status.INACTIVE, photo: '' })
+      this.userService.fileService.deleteExistingFile(photo)
 
       return res.status(204).json({})
     } catch (error: any) {
