@@ -1,7 +1,7 @@
 import { type IRecipeController, type IRecipeService, type IRecipeRequest, type ICustomRequest } from '../dto'
 import { type Response, type Request } from 'express'
 import { type User } from '../models'
-import { LoggerService, RecipeService, Routes, Status, buildURLForFile } from '../services'
+import { LoggerService, RecipeService, Routes, Status } from '../services'
 import { matchedData } from 'express-validator'
 
 export class RecipeController implements IRecipeController {
@@ -96,7 +96,7 @@ export class RecipeController implements IRecipeController {
         const { filename } = req.file
         this.recipeService.fileService.deleteExistingFile(photo)
 
-        const { path, url } = buildURLForFile(Routes.RECIPES, filename)
+        const { path, url } = this.recipeService.fileService.buildURLForFile(Routes.RECIPES, filename)
 
         await this.recipeService.updateRecipeByIdService(id, { photo: path })
 
