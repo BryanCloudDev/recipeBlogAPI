@@ -4,23 +4,27 @@ import {
   type IUserService,
   type ICustomRequest,
   type IAuthenticationMiddleWare,
-  type IRoleMiddleWare
+  type IRoleMiddleWare,
+  type IFileMiddleWare
 } from '../dto'
 import { type Request, type Response, type NextFunction } from 'express'
-import { LoggerService, Status, UserService } from '../services'
-import { AuthenticationMiddleWare, RoleMiddleWare } from '.'
+import { LoggerService, Routes, Status, UserService } from '../services'
+import { AuthenticationMiddleWare, FileMiddleWare, RoleMiddleWare } from '.'
 
 export class UserMiddleWare implements IUserMiddleWare {
   readonly authenticationMiddleware: IAuthenticationMiddleWare
+  readonly fileMiddleWare: IFileMiddleWare
   readonly roleMiddleWare: IRoleMiddleWare
 
   constructor(
     private readonly _authenticationMiddleware: IAuthenticationMiddleWare = new AuthenticationMiddleWare(),
+    private readonly _fileMiddleWare: IFileMiddleWare = new FileMiddleWare(Routes.RECIPES),
     private readonly _roleMiddleWare: IRoleMiddleWare = new RoleMiddleWare(),
     private readonly userService: IUserService = new UserService()
   ) {
     this.authenticationMiddleware = _authenticationMiddleware
     this.roleMiddleWare = _roleMiddleWare
+    this.fileMiddleWare = _fileMiddleWare
   }
 
   validateEmailInChange = async (req: Request, res: Response, next: NextFunction): Promise<Response | undefined> => {
