@@ -92,8 +92,9 @@ export class RecipeController implements IRecipeController {
   public uploadPhoto = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
       if (req.file !== undefined) {
-        const { id } = req.recipe
+        const { id, photo } = req.recipe
         const { filename } = req.file
+        this.recipeService.fileService.deleteExistingFile(photo)
 
         const { path, url } = buildURLForFile(Routes.RECIPES, filename)
 
