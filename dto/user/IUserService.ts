@@ -4,7 +4,7 @@ import { type IFileService } from '../IFileService'
 
 export interface IUserService {
   createUserInstanceService: (userRequest: IUserRequest, role: Role) => Promise<User>
-  createUserService: (user: User) => Promise<User>
+  createUserService: (user: User) => Promise<number>
   getAllUsersService: () => Promise<User[]>
   getUserbyIdService: (id: number) => Promise<User | null>
   updateUserByIdService: (id: number, user: Partial<IUserRequest>, role?: Role) => Promise<void>

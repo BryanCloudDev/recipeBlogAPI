@@ -22,14 +22,10 @@ export class UserService implements IUserService {
 
   public createUserInstanceService = async (userRequest: IUserRequest, role: Role): Promise<User> => {
     try {
-      // const { photo } = userRequest
-      // const photoBuffer = this.fileService.convertFileToBuffer(photo)
-
       userRequest.password = await this.authenticationService.encrypt(userRequest.password)
       const user = this.repository.user.create({
         ...userRequest,
         role
-        // photo: photoBuffer
       })
       return user
     } catch (error: any) {
@@ -37,10 +33,10 @@ export class UserService implements IUserService {
     }
   }
 
-  public createUserService = async (user: User): Promise<User> => {
+  public createUserService = async (user: User): Promise<number> => {
     try {
       const createdUser = await this.repository.user.save(user)
-      return createdUser
+      return createdUser.id
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in create user service').message)
     }
