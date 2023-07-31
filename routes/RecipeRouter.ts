@@ -2,7 +2,7 @@ import { type IRecipeRouter, type IRecipeController, type IRecipeMiddleWare } fr
 import express, { type Router } from 'express'
 import { RecipeController } from '../controllers'
 import { Roles, routeFactory, __dirname, Routes } from '../services'
-import { RecipeMiddleWare, validateFields, validateFile } from '../middlewares'
+import { RecipeMiddleWare, validateFields } from '../middlewares'
 import { body, checkExact, param, query } from 'express-validator'
 import path from 'path'
 
@@ -104,7 +104,6 @@ export class RecipeRouter implements IRecipeRouter {
           message: 'Too many fields specified'
         }),
         validateFields,
-        validateFile,
         this.recipeMiddleWare.validateRecipeId
       ],
       this.recipeController.updateRecipeById

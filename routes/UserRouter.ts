@@ -4,7 +4,7 @@ import { body, checkExact, param } from 'express-validator'
 import { type IUserMiddleWare, type IUserController, type IUserRouter } from '../dto'
 import { Roles, routeFactory } from '../services'
 import { UserController } from '../controllers'
-import { UserMiddleWare, validateFields, validateFile, validateStatus } from '../middlewares'
+import { UserMiddleWare, validateFields, validateStatus } from '../middlewares'
 
 export class UserRouter implements IUserRouter {
   public readonly _router: Router
@@ -55,8 +55,7 @@ export class UserRouter implements IUserRouter {
         }),
         validateFields,
         this.userMiddleware.emailExists,
-        this.userMiddleware.roleMiddleWare.validateRoleId,
-        validateFile
+        this.userMiddleware.roleMiddleWare.validateRoleId
       ],
       this.userController.createUser
     )
@@ -71,8 +70,7 @@ export class UserRouter implements IUserRouter {
         }),
         validateFields,
         this.userMiddleware.emailExists,
-        this.userMiddleware.roleMiddleWare.validateRoleId,
-        validateFile
+        this.userMiddleware.roleMiddleWare.validateRoleId
       ],
       this.userController.createUser
     )
@@ -151,7 +149,6 @@ export class UserRouter implements IUserRouter {
         this.userMiddleware.validateUserId,
         this.userMiddleware.validateEmailInChange,
         this.userMiddleware.roleMiddleWare.validateRoleId,
-        validateFile,
         validateStatus
       ],
       this.userController.updateUserbyId
