@@ -13,10 +13,11 @@ export class RecipeController implements IRecipeController {
 
       const recipeRequest: IRecipeRequest = req.body
       const recipeInstance = this.recipeService.createRecipeInstanceService(recipeRequest)
-      await this.recipeService.createRecipeService(recipeInstance, user)
+      const id = await this.recipeService.createRecipeService(recipeInstance, user)
 
       return res.status(201).json({
-        message: 'Succesfully created'
+        message: 'Succesfully created',
+        id
       })
     } catch (error: any) {
       const { message } = LoggerService.errorMessageHandler(error, 'Error in create recipe controller')

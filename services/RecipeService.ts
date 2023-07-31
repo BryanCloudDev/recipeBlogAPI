@@ -20,7 +20,7 @@ export class RecipeService implements IRecipeService {
 
   public createRecipeInstanceService = (recipeRequest: IRecipeRequest): Recipe => {
     try {
-      const { ingredients, photo, steps, ...recipe } = recipeRequest
+      const { ingredients, steps, ...recipe } = recipeRequest
 
       // const photoBuffer = this.fileService.convertFileToBuffer(photo)
 
@@ -43,7 +43,7 @@ export class RecipeService implements IRecipeService {
     }
   }
 
-  public createRecipeService = async (recipe: Recipe, user: User): Promise<void> => {
+  public createRecipeService = async (recipe: Recipe, user: User): Promise<number> => {
     try {
       const createdRecipe = await this.repository.recipe.save({ ...recipe, user })
 
@@ -56,6 +56,8 @@ export class RecipeService implements IRecipeService {
       )
 
       await Promise.all([stepsPromises, ingredientsPromises])
+
+      return createdRecipe.id
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in create recipe service').message)
     }
@@ -72,7 +74,7 @@ export class RecipeService implements IRecipeService {
 
   public updateRecipeByIdService = async (id: number, recipe: IRecipeRequest): Promise<void> => {
     try {
-      const { photo, steps, ingredients, ...recipeRequest } = recipe
+      const { steps, ingredients, ...recipeRequest } = recipe
 
       // const photoBuffer = this.fileService.convertFileToBuffer(photo)
 
