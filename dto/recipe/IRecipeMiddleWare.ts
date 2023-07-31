@@ -5,6 +5,6 @@ export interface IRecipeMiddleWare {
   validateRecipeId: (req: ICustomRequest, res: Response, next: NextFunction) => Promise<Response | undefined>
   validateRecipeOnDelete: (req: ICustomRequest, res: Response, next: NextFunction) => Promise<Response | undefined>
   authenticationMiddleware: IAuthenticationMiddleWare
-  userMiddleware: IUserMiddleWare
   fileMiddleWare: IFileMiddleWare
+  userMiddleware: IUserMiddleWare
 }

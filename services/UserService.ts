@@ -10,11 +10,15 @@ import { AuthenticationService, FileService, LoggerService } from './'
 import { UserRepository } from '../repositories'
 
 export class UserService implements IUserService {
+  readonly fileService: IFileService
+
   constructor(
     private readonly authenticationService: IAuthenticationService = new AuthenticationService(),
-    private readonly fileService: IFileService = new FileService(),
+    private readonly _fileService: IFileService = new FileService(),
     private readonly repository: IUserRepository = new UserRepository()
-  ) {}
+  ) {
+    this.fileService = _fileService
+  }
 
   public createUserInstanceService = async (userRequest: IUserRequest, role: Role): Promise<User> => {
     try {
