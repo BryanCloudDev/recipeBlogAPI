@@ -1,4 +1,4 @@
-import { type IRecipeRequest } from '../'
+import { type IFileService, type IRecipeRequest } from '../'
 import { type User, type Recipe } from '../../models'
 
 export interface IRecipeService {
@@ -8,4 +8,5 @@ export interface IRecipeService {
   getRecipebyIdService: (id: number) => Promise<Recipe | null>
   getRecipesBySearchService: (search: string) => Promise<Recipe[]>
   updateRecipeByIdService: (id: number, recipe: Partial<IRecipeRequest>) => Promise<void>
+  fileService: IFileService
 }
