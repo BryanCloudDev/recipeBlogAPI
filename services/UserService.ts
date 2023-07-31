@@ -57,13 +57,10 @@ export class UserService implements IUserService {
 
   public updateUserByIdService = async (id: number, user: Partial<IUserRequest>, role?: Role): Promise<void> => {
     try {
-      const { photo, roleId, ...userRequest } = user
-
-      // const photoBuffer = this.fileService.convertFileToBuffer(photo)
+      const { roleId, ...userRequest } = user
 
       await this.repository.user.update(id, {
         ...userRequest
-        // photo: photoBuffer, role
       })
     } catch (error: any) {
       console.log(error)
