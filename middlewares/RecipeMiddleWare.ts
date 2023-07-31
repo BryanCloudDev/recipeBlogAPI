@@ -3,23 +3,27 @@ import {
   type IRecipeMiddleWare,
   type IAuthenticationMiddleWare,
   type ICustomRequest,
-  type IRecipeService
+  type IRecipeService,
+  type IFileMiddleWare
 } from '../dto'
-import { AuthenticationMiddleWare, UserMiddleWare } from '.'
+import { AuthenticationMiddleWare, FileMiddleWare, UserMiddleWare } from '.'
 import { type Response, type NextFunction } from 'express'
-import { LoggerService, RecipeService, Status } from '../services'
+import { LoggerService, RecipeService, Routes, Status } from '../services'
 
 export class RecipeMiddleWare implements IRecipeMiddleWare {
   readonly authenticationMiddleware: IAuthenticationMiddleWare
+  readonly fileMiddleWare: IFileMiddleWare
   readonly userMiddleware: IUserMiddleWare
 
   constructor(
     private readonly _authenticationMiddleware: IAuthenticationMiddleWare = new AuthenticationMiddleWare(),
+    private readonly _fileMiddleWare: IFileMiddleWare = new FileMiddleWare(Routes.RECIPES),
     private readonly _userMiddleware: IUserMiddleWare = new UserMiddleWare(),
     private readonly recipeService: IRecipeService = new RecipeService()
   ) {
     this.authenticationMiddleware = _authenticationMiddleware
     this.userMiddleware = _userMiddleware
+    this.fileMiddleWare = _fileMiddleWare
   }
 
   validateRecipeId = async (req: ICustomRequest, res: Response, next: NextFunction): Promise<Response | undefined> => {
