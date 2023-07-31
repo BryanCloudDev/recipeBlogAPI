@@ -1,14 +1,15 @@
 import moment from 'moment'
-import { type Router } from 'express'
+import express, { type Router } from 'express'
 import { body, checkExact, param } from 'express-validator'
 import { type IUserMiddleWare, type IUserController, type IUserRouter } from '../dto'
-import { Roles, routeFactory } from '../services'
+import { Roles, Routes, routeFactory } from '../services'
 import { UserController } from '../controllers'
 import { UserMiddleWare, validateFields, validateStatus } from '../middlewares'
+import path from 'path'
 
 export class UserRouter implements IUserRouter {
   public readonly _router: Router
-  public readonly route = '/users'
+  public readonly route = `/${Routes.USERS}`
   private readonly userValidations = [
     body('email', 'The email is not valid').isEmail().trim(),
     body('firstName', 'The first name is mandatory').notEmpty().isString().isLength({ max: 30 }).trim(),
@@ -42,6 +43,8 @@ export class UserRouter implements IUserRouter {
     this.getUserById()
     this.updateUserPassword()
     this.updateUserById()
+    this.uploadPhoto()
+    this.staticFiles()
   }
 
   private createAdminUser(): void {
@@ -169,6 +172,25 @@ export class UserRouter implements IUserRouter {
       ],
       this.userController.updateUserPassword
     )
+  }
+
+  private uploadPhoto(): void {
+    this._router.patch(
+      '/upload/:id',
+      [
+        this.userMiddleware.authenticationMiddleware.validateJWT,
+        this.userMiddleware.authenticationMiddleware.validateRole([Roles.ADMIN]),
+        param('id', 'User id must be an integer').isNumeric(),
+        validateFields,
+        this.userMiddleware.validateUserId,
+        this.userMiddleware.fileMiddleWare.validateFile
+      ],
+      this.userController.uploadPhoto
+    )
+  }
+
+  private staticFiles(): void {
+    this._router.use(express.static(path.join(__dirname, 'files')))
   }
 
   public get router(): Router {
