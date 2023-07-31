@@ -11,12 +11,16 @@ import { FileService, IngredientService, LoggerService, StepService } from './'
 import { RecipeRepository } from '../repositories'
 
 export class RecipeService implements IRecipeService {
+  readonly fileService: IFileService
+
   constructor(
+    private readonly _fileService: IFileService = new FileService(),
+    private readonly ingredientService: IIngredientService = new IngredientService(),
     private readonly repository: IRecipeRepository = new RecipeRepository(),
-    private readonly fileService: IFileService = new FileService(),
-    private readonly stepService: IStepService = new StepService(),
-    private readonly ingredientService: IIngredientService = new IngredientService()
-  ) {}
+    private readonly stepService: IStepService = new StepService()
+  ) {
+    this.fileService = _fileService
+  }
 
   public createRecipeInstanceService = (recipeRequest: IRecipeRequest): Recipe => {
     try {
