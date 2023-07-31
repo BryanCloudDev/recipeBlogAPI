@@ -28,8 +28,9 @@ export class RecipeController implements IRecipeController {
 
   public deleteRecipeById = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
-      const { id } = req.recipe
-      await this.recipeService.updateRecipeByIdService(id, { status: Status.INACTIVE })
+      const { id, photo } = req.recipe
+      await this.recipeService.updateRecipeByIdService(id, { status: Status.INACTIVE, photo: '' })
+      this.recipeService.fileService.deleteExistingFile(photo)
 
       return res.status(204).json({})
     } catch (error: any) {
