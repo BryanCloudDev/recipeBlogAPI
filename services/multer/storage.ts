@@ -1,5 +1,6 @@
 import multer from 'multer'
 import path from 'path'
+import { __dirname } from '../index'
 import { type Request } from 'express'
 import { v4 } from 'uuid'
 
