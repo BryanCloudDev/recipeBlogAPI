@@ -1,7 +1,7 @@
 import { type IRecipeController, type IRecipeService, type IRecipeRequest, type ICustomRequest } from '../dto'
 import { type Response, type Request } from 'express'
 import { type User } from '../models'
-import { LoggerService, RecipeService, Status } from '../services'
+import { LoggerService, RecipeService, Routes, Status, buildURLForFile } from '../services'
 import { matchedData } from 'express-validator'
 
 export class RecipeController implements IRecipeController {
@@ -82,6 +82,31 @@ export class RecipeController implements IRecipeController {
       await this.recipeService.updateRecipeByIdService(recipe.id, recipeRequest)
 
       return res.status(204).json({})
+    } catch (error) {
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in update recipe by id controller')
+
+      return res.status(500).json({ message })
+    }
+  }
+
+  public uploadPhoto = async (req: ICustomRequest, res: Response): Promise<Response> => {
+    try {
+      if (req.file !== undefined) {
+        const { id } = req.recipe
+        const { filename } = req.file
+        const { path, url } = buildURLForFile(Routes.RECIPES, filename)
+
+        await this.recipeService.updateRecipeByIdService(id, { photo: path })
+
+        return res.status(200).json({
+          message: 'Succesfully uploaded',
+          url
+        })
+      }
+
+      return res.status(500).json({
+        message: 'Error when uploading photo'
+      })
     } catch (error) {
       const { message } = LoggerService.errorMessageHandler(error, 'Error in update recipe by id controller')
 

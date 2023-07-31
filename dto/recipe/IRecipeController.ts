@@ -8,4 +8,5 @@ export interface IRecipeController {
   getRecipeById: (req: Request, res: Response) => Promise<Response>
   getRecipesByText: (req: Request, res: Response) => Promise<Response>
   updateRecipeById: (req: ICustomRequest, res: Response) => Promise<Response>
+  uploadPhoto: (req: ICustomRequest, res: Response) => Promise<Response>
 }
