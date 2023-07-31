@@ -110,11 +110,11 @@ export class UserController implements IUserController {
   public uploadPhoto = async (req: ICustomRequest, res: Response): Promise<Response> => {
     try {
       if (req.file !== undefined) {
-        const { id, photo } = req.recipe
+        const { id, photo } = req.user
         const { filename } = req.file
         this.userService.fileService.deleteExistingFile(photo)
 
-        const { path, url } = this.userService.fileService.buildURLForFile(Routes.RECIPES, filename)
+        const { path, url } = this.userService.fileService.buildURLForFile(Routes.USERS, filename)
 
         await this.userService.updateUserByIdService(id, { photo: path })
 
@@ -128,7 +128,7 @@ export class UserController implements IUserController {
         message: 'Error when uploading photo'
       })
     } catch (error) {
-      const { message } = LoggerService.errorMessageHandler(error, 'Error in update recipe by id controller')
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in update photo user by id controller')
 
       return res.status(500).json({ message })
     }
