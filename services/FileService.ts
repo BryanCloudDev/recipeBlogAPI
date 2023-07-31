@@ -6,7 +6,7 @@ import { Routes } from './enums/Routes'
 export class FileService implements IFileService {
   deleteExistingFile = async (pathFile: string): Promise<void> => {
     try {
-      if (pathFile !== undefined) {
+      if (pathFile !== null) {
         await fs.unlink(`${__dirname}/files/${pathFile}`)
       }
     } catch (error) {
@@ -16,9 +16,9 @@ export class FileService implements IFileService {
 
   buildURLForFile = (route: string, fileName: string): { url: string; path: string } => {
     return {
-      url: `${process.env.BASE_URL as string}:${process.env.PORT as string}/${Routes.API}/${route}/photo/${
-        Routes.RECIPES
-      }/${fileName}`,
+      url: `${process.env.BASE_URL as string}:${process.env.PORT as string}/${
+        Routes.API
+      }/${route}/photo/${route}/${fileName}`,
       path: `photo/${route}/${fileName}`
     }
   }
