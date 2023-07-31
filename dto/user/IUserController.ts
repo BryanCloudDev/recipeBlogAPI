@@ -9,4 +9,5 @@ export interface IUserController {
   getUserProfile: (req: ICustomRequest, res: Response) => Promise<Response>
   updateUserPassword: (req: ICustomRequest, res: Response) => Promise<Response>
   updateUserbyId: (req: ICustomRequest, res: Response) => Promise<Response>
+  uploadPhoto: (req: ICustomRequest, res: Response) => Promise<Response>
 }

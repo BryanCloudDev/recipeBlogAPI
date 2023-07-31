@@ -7,7 +7,7 @@ import {
 } from '../dto'
 import { type Response, type Request } from 'express'
 import { type User } from '../models'
-import { LoggerService, Status, UserService } from '../services'
+import { LoggerService, Routes, Status, UserService } from '../services'
 
 export class UserController implements IUserController {
   constructor(readonly userService: IUserService = new UserService()) {}
@@ -103,6 +103,33 @@ export class UserController implements IUserController {
       return result !== undefined ? res.status(400).json({ message: result }) : res.status(204).json({})
     } catch (error: any) {
       const { message } = LoggerService.errorMessageHandler(error, 'Error in update user profile controller')
+      return res.status(500).json({ message })
+    }
+  }
+
+  public uploadPhoto = async (req: ICustomRequest, res: Response): Promise<Response> => {
+    try {
+      if (req.file !== undefined) {
+        const { id, photo } = req.recipe
+        const { filename } = req.file
+        this.userService.fileService.deleteExistingFile(photo)
+
+        const { path, url } = this.userService.fileService.buildURLForFile(Routes.RECIPES, filename)
+
+        await this.userService.updateUserByIdService(id, { photo: path })
+
+        return res.status(200).json({
+          message: 'Succesfully uploaded',
+          url
+        })
+      }
+
+      return res.status(500).json({
+        message: 'Error when uploading photo'
+      })
+    } catch (error) {
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in update recipe by id controller')
+
       return res.status(500).json({ message })
     }
   }
