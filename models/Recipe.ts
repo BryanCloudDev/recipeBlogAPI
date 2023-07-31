@@ -24,7 +24,7 @@ export class Recipe {
   @Column({ default: 1 })
   status: number
 
-  @Column({ nullable: false })
+  @Column({ default: null })
   photo: string
 
   @ManyToOne(() => User, user => user.recipes)
