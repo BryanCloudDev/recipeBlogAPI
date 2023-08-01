@@ -19,7 +19,7 @@ export class AuthorizationRouter implements IAuthorizationRouter {
     this.login()
   }
 
-  login(): void {
+  private login(): void {
     this._router.post('/', this.authorizationController.login)
   }
 
