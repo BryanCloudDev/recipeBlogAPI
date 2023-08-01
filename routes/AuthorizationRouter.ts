@@ -1,11 +1,11 @@
 import { type IAuthorizationRouter, type IAuthorizationController } from '../dto'
 import { type Router } from 'express'
 import { AuthorizationController } from '../controllers'
-import { routeFactory } from '../services'
+import { Routes, routeFactory } from '../services'
 
 export class AuthorizationRouter implements IAuthorizationRouter {
   readonly _router: Router
-  readonly route = '/login'
+  readonly route = `/${Routes.LOGIN}`
 
   constructor(
     readonly authorizationController: IAuthorizationController = new AuthorizationController(),

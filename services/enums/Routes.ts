@@ -1,5 +1,6 @@
 export enum Routes {
-  USERS = 'users',
+  API = 'api',
+  LOGIN = 'login',
   RECIPES = 'recipes',
-  API = 'api'
+  USERS = 'users'
 }
