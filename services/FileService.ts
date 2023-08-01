@@ -1,10 +1,10 @@
-import { type IFileService } from '../dto'
+import { type IURLResponse, type IFileService } from '../dto'
 import fs from 'fs/promises'
 import { __dirname } from './utils'
 import { Routes } from './enums/Routes'
 
 export class FileService implements IFileService {
-  deleteExistingFile = async (pathFile: string): Promise<void> => {
+  public deleteExistingFile = async (pathFile: string): Promise<void> => {
     try {
       if (pathFile !== null) {
         await fs.unlink(`${__dirname}/files/${pathFile}`)
@@ -14,7 +14,7 @@ export class FileService implements IFileService {
     }
   }
 
-  buildURLForFile = (route: string, fileName: string): { url: string; path: string } => {
+  public buildURLForFile = (route: string, fileName: string): IURLResponse => {
     return {
       url: `${process.env.BASE_URL as string}:${process.env.PORT as string}/${
         Routes.API
