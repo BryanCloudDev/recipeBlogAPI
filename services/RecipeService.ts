@@ -4,7 +4,8 @@ import {
   type IStepService,
   type IIngredientService,
   type IRecipeRequest,
-  type IRecipeRepository
+  type IRecipeRepository,
+  type IFilter
 } from '../dto'
 import { type User, type Recipe } from '../models'
 import { FileService, IngredientService, LoggerService, StepService } from './'
@@ -98,10 +99,25 @@ export class RecipeService implements IRecipeService {
     }
   }
 
-  public getAllRecipesService = async (): Promise<Recipe[]> => {
+  public getAllRecipesService = async (filter?: IFilter<Recipe>): Promise<{ recipes: Recipe[]; count: number }> => {
     try {
-      const users = await this.repository.recipe.find()
-      return users
+      const recipesPromise = this.repository.recipe.find(
+        filter !== undefined
+          ? {
+              where: filter.where,
+              skip: filter.offset,
+              take: filter.limit,
+              select: filter.select,
+              order: filter.order,
+              relations: filter.relations
+            }
+          : {}
+      )
+      const countPromise = this.repository.recipe.count(filter !== undefined ? { where: filter.where } : undefined)
+
+      const [recipes, count] = await Promise.all([recipesPromise, countPromise])
+
+      return { recipes, count }
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in get all recipes service').message)
     }
