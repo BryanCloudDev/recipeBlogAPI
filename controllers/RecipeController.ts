@@ -42,11 +42,8 @@ export class RecipeController implements IRecipeController {
   public getAllRecipes = async (req: ICustomRequest<Recipe>, res: Response): Promise<Response> => {
     try {
       const { filter } = req
-      if (filter !== undefined) {
-        console.log(filter)
-      }
 
-      const recipes = await this.recipeService.getAllRecipesService()
+      const recipes = await this.recipeService.getAllRecipesService(filter)
 
       return res.status(200).json(recipes)
     } catch (error: any) {
