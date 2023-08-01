@@ -1,11 +1,12 @@
 import { type IUserRequest } from './'
 import { type Role, type User } from '../../models'
 import { type IFileService } from '../IFileService'
+import { type IFilter } from '..'
 
 export interface IUserService {
   createUserInstanceService: (userRequest: IUserRequest, role: Role) => Promise<User>
   createUserService: (user: User) => Promise<number>
-  getAllUsersService: () => Promise<User[]>
+  getAllUsersService: (filter?: IFilter<User>) => Promise<{ users: User[]; count: number }>
   getUserbyIdService: (id: number) => Promise<User | null>
   updateUserByIdService: (id: number, user: Partial<IUserRequest>, role?: Role) => Promise<void>
   updateUserPasswordService: (user: User, currentPassword: string, newPassword: string) => Promise<string | undefined>

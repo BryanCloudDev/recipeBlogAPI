@@ -45,9 +45,11 @@ export class UserController implements IUserController {
     }
   }
 
-  getAllUsers = async (req: Request, res: Response): Promise<Response> => {
+  getAllUsers = async (req: ICustomRequest<User>, res: Response): Promise<Response> => {
     try {
-      const users = await this.userService.getAllUsersService()
+      const { filter } = req
+      const users = await this.userService.getAllUsersService(filter)
+
       return res.status(200).json(users)
     } catch (error: any) {
       const { message } = LoggerService.errorMessageHandler(error, 'Error in get all users controller')

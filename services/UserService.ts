@@ -3,7 +3,8 @@ import {
   type IAuthenticationService,
   type IUserRepository,
   type IUserRequest,
-  type IFileService
+  type IFileService,
+  type IFilter
 } from '../dto'
 import { type Role, type User } from '../models'
 import { AuthenticationService, FileService, LoggerService } from './'
@@ -59,16 +60,30 @@ export class UserService implements IUserService {
         ...userRequest
       })
     } catch (error: any) {
-      console.log(error)
-
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in update user by id service').message)
     }
   }
 
-  public getAllUsersService = async (): Promise<User[]> => {
+  public getAllUsersService = async (filter?: IFilter<User>): Promise<{ users: User[]; count: number }> => {
     try {
-      const users = await this.repository.user.find()
-      return users
+      const usersPromise = await this.repository.user.find(
+        filter !== undefined
+          ? {
+              where: filter.where,
+              skip: filter.offset,
+              take: filter.limit,
+              select: filter.select,
+              order: filter.order,
+              relations: filter.relations
+            }
+          : {}
+      )
+
+      const countPromise = this.repository.user.count(filter !== undefined ? { where: filter.where } : undefined)
+
+      const [users, count] = await Promise.all([usersPromise, countPromise])
+
+      return { users, count }
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in get all users service').message)
     }

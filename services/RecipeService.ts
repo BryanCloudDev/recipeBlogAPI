@@ -113,7 +113,7 @@ export class RecipeService implements IRecipeService {
             }
           : {}
       )
-      const countPromise = this.repository.recipe.count(filter !== undefined ? { where: filter.where } : undefined)
+      const countPromise = this.repository.recipe.count(filter !== undefined ? { where: filter.where } : {})
 
       const [recipes, count] = await Promise.all([recipesPromise, countPromise])
 
