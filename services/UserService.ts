@@ -4,10 +4,11 @@ import {
   type IUserRepository,
   type IUserRequest,
   type IFileService,
-  type IFilter
+  type IFilter,
+  type IGetAllItemsResult
 } from '../dto'
 import { type Role, type User } from '../models'
-import { AuthenticationService, FileService, LoggerService } from './'
+import { AuthenticationService, FileService, LoggerService, getAllItems } from './'
 import { UserRepository } from '../repositories'
 
 export class UserService implements IUserService {
@@ -64,26 +65,14 @@ export class UserService implements IUserService {
     }
   }
 
-  public getAllUsersService = async (filter?: IFilter<User>): Promise<{ users: User[]; count: number }> => {
+  public getAllUsersService = async (filter?: IFilter<User>): Promise<IGetAllItemsResult<User>> => {
     try {
-      const usersPromise = await this.repository.user.find(
-        filter !== undefined
-          ? {
-              where: filter.where,
-              skip: filter.offset,
-              take: filter.limit,
-              select: filter.select,
-              order: filter.order,
-              relations: filter.relations
-            }
-          : {}
-      )
+      const result = await getAllItems({
+        filter,
+        repository: this.repository.user
+      })
 
-      const countPromise = this.repository.user.count(filter !== undefined ? { where: filter.where } : undefined)
-
-      const [users, count] = await Promise.all([usersPromise, countPromise])
-
-      return { users, count }
+      return result
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in get all users service').message)
     }
