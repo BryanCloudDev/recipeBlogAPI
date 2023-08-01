@@ -4,7 +4,7 @@ import { type IAuthenticationService, type IJwtPayload } from '../dto'
 import { LoggerService } from './'
 
 export class AuthenticationService implements IAuthenticationService {
-  encrypt = async (text: string): Promise<string> => {
+  public encrypt = async (text: string): Promise<string> => {
     try {
       const salt = await bcrypt.genSalt()
       const password = await bcrypt.hash(text, salt)
@@ -14,7 +14,7 @@ export class AuthenticationService implements IAuthenticationService {
     }
   }
 
-  checkPassword = async (password: string, hash: string): Promise<boolean> => {
+  public checkPassword = async (password: string, hash: string): Promise<boolean> => {
     try {
       const isCorrect = await bcrypt.compare(password, hash)
       return isCorrect
@@ -23,7 +23,7 @@ export class AuthenticationService implements IAuthenticationService {
     }
   }
 
-  generateJWT = (data: IJwtPayload): any => {
+  public generateJWT = (data: IJwtPayload): any => {
     return new Promise((resolve, reject) => {
       const payload = {
         ...data

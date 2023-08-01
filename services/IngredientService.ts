@@ -6,7 +6,7 @@ import { IngredientRepository } from '../repositories'
 export class IngredientService implements IIngredientService {
   constructor(readonly repository: IIngredientRepository = new IngredientRepository()) {}
 
-  createIngredientInstanceService = (ingredientRequest: IIngredientRequest): Ingredient => {
+  public createIngredientInstanceService = (ingredientRequest: IIngredientRequest): Ingredient => {
     try {
       return this.repository.ingredient.create({ ...ingredientRequest })
     } catch (error: any) {
@@ -14,7 +14,7 @@ export class IngredientService implements IIngredientService {
     }
   }
 
-  createIngredientService = async (ingredient: Ingredient, recipe: Recipe): Promise<void> => {
+  public createIngredientService = async (ingredient: Ingredient, recipe: Recipe): Promise<void> => {
     try {
       await this.repository.ingredient.save({ ...ingredient, recipe })
     } catch (error: any) {
@@ -22,7 +22,7 @@ export class IngredientService implements IIngredientService {
     }
   }
 
-  updateIngredientService = async (ingredient: IIngredientRequest): Promise<void> => {
+  public updateIngredientService = async (ingredient: IIngredientRequest): Promise<void> => {
     try {
       const { id } = ingredient
       await this.repository.ingredient.update(id, { ...ingredient })

@@ -14,7 +14,7 @@ export class PassportService implements IPassportService {
     private readonly repository: IUserRepository = new UserRepository()
   ) {}
 
-  localStrategy = (): void => {
+  public localStrategy = (): void => {
     this.passportCustom.use(
       new LocalStrategy(
         {
@@ -56,7 +56,7 @@ export class PassportService implements IPassportService {
     )
   }
 
-  jwtStrategy = (): void => {
+  public jwtStrategy = (): void => {
     this.passportCustom.use(
       new JWTStrategy(
         {
@@ -86,7 +86,7 @@ export class PassportService implements IPassportService {
     )
   }
 
-  get passport(): passport.PassportStatic {
+  public get passport(): passport.PassportStatic {
     this.localStrategy()
     this.jwtStrategy()
     return this.passportCustom

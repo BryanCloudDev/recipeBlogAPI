@@ -6,7 +6,7 @@ import { RoleRepository } from '../repositories'
 export class RoleService implements IRoleService {
   constructor(private readonly repository: IRoleRepository = new RoleRepository()) {}
 
-  getRoleByIdService = async (id: number): Promise<Role | null> => {
+  public getRoleByIdService = async (id: number): Promise<Role | null> => {
     try {
       const role = await this.repository.role.findOne({ where: { id } })
       return role
