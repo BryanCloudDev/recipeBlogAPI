@@ -15,4 +15,9 @@ export class ItemRecipeBase {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedOn: Date
+
+  toJSON(): Omit<this, 'createdOn' | 'updatedOn' | 'toJSON'> {
+    const { createdOn, updatedOn, ...ingredient } = this
+    return ingredient
+  }
 }
