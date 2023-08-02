@@ -22,9 +22,9 @@ export class UserService implements IUserService {
     this.fileService = _fileService
   }
 
-  public createUserInstanceService = async (userRequest: IUserRequest, role: Role): Promise<User> => {
+  public createUserInstanceService = async (userRequest: Partial<IUserRequest>, role: Role): Promise<User> => {
     try {
-      userRequest.password = await this.authenticationService.encrypt(userRequest.password)
+      userRequest.password = await this.authenticationService.encrypt(userRequest.password as string)
       const user = this.repository.user.create({
         ...userRequest,
         role
