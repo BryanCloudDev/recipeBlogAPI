@@ -99,7 +99,7 @@ Deletes a recipe by id.
 Gets all recipes.
 
 + Parameters
-    + filter (optional, string) - The filter object in JSON format. Example: `{"limit":2, "offset":0, "where":{"status": 2}, "select":["firstName"],"order":{"createdOn":"ASC"}}`
+    + filter (optional, string) - The filter object in JSON format. Example: `filter={"limit":2, "offset":0, "where":{"status": 2}, "select":["firstName"],"order":{"createdOn":"ASC"}}`
 
 + Response 200 (application/json) 
     + Attributes (array[RecipeResponse])
@@ -118,7 +118,7 @@ Gets all recipes.
 
 ### Add or update a recipe photo [PATCH]
 
-Upload a a photo to a recipe by id, it has to be sent under the name of "photo", allowed image types are jpeg, jpg, png and gif.
+Upload a photo to a recipe by id, it has to be sent under the name of "photo", allowed image types are jpeg, jpg, png and gif.
 
 
 + Parameters
