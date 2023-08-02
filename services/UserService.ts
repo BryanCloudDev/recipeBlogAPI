@@ -46,7 +46,7 @@ export class UserService implements IUserService {
 
   public getUserbyIdService = async (id: number): Promise<User | null> => {
     try {
-      const user = await this.repository.user.findOne({ where: { id } })
+      const user = await this.repository.user.findOne({ where: { id }, relations: ['role'] })
       return user
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in get user by id service').message)
