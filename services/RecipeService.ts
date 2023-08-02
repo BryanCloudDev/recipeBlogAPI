@@ -68,7 +68,7 @@ export class RecipeService implements IRecipeService {
 
   public getRecipebyIdService = async (id: number): Promise<Recipe | null> => {
     try {
-      const recipe = await this.repository.recipe.findOneBy({ id })
+      const recipe = await this.repository.recipe.findOne({ where: { id }, relations: ['step', 'ingredient'] })
       return recipe
     } catch (error: any) {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in get recipe by id service').message)
