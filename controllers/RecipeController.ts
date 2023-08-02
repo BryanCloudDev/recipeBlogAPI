@@ -113,7 +113,7 @@ export class RecipeController implements IRecipeController {
         message: 'Error when uploading photo'
       })
     } catch (error) {
-      const { message } = LoggerService.errorMessageHandler(error, 'Error in update recipe by id controller')
+      const { message } = LoggerService.errorMessageHandler(error, 'Error in update upload recipe photo controller')
 
       return res.status(500).json({ message })
     }

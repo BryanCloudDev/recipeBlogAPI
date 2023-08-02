@@ -1,4 +1,4 @@
-import { type Request, type Response, type NextFunction, type RequestHandler } from 'express'
+import { type Response, type NextFunction, type RequestHandler, type Request } from 'express'
 import { upload } from '../services/multer'
 import { type IFileMiddleWare } from '../dto/file'
 
@@ -9,14 +9,13 @@ export class FileMiddleWare implements IFileMiddleWare {
     this.configMulter = upload(folder).single('photo')
   }
 
-  validateFile = (req: Request, res: Response, next: NextFunction): void => {
+  public validateFile = (req: Request, res: Response, next: NextFunction): void => {
     this.configMulter(req, res, (err: any) => {
       if (err !== undefined) {
         return res.json({
           message: err.message
         })
       }
-
       next()
     })
   }
