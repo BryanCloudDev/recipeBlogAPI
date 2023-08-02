@@ -59,10 +59,12 @@ export class UserController implements IUserController {
 
   getUserById = async (req: ICustomRequest<User>, res: Response): Promise<Response> => {
     try {
-      const { createdOn, password, role, updatedOn, ...user } = req.user
+      const { password, role, updatedOn, ...user } = req.user
+      const { id } = role
+
       return res.status(200).json({
         ...user,
-        roleId: role.id
+        roleId: id
       })
     } catch (error: any) {
       const { message } = LoggerService.errorMessageHandler(error, 'Error in get user by id controller')
@@ -72,7 +74,7 @@ export class UserController implements IUserController {
 
   getUserProfile = async (req: ICustomRequest<User>, res: Response): Promise<Response> => {
     try {
-      const { role, password, updatedOn, ...user }: User = req.user
+      const { password, role, updatedOn, ...user }: User = req.user
       const { id } = role
 
       return res.status(200).json({
