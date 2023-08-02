@@ -43,10 +43,7 @@ object containing a recipe title, description, steps and ingredients.
 
 + Response 201 (application/json)
 
-        {
-            "message": "Succesfully created",
-            "id": 1
-        }
+    + Attributes (CreatedSuccess)
 
 
 ## Endpoints with parameters [/recipes/{id}]
@@ -136,7 +133,145 @@ Upload a photo to a recipe by id, it has to be sent under the name of "photo", a
             "url": "http://localhost:3000/api/recipes/photo/recipes/d917b131-43e4-443f-a4dd-cb6d78b7693c.jpeg"
         }
 
+# Group Users
+
+## Users [/users]
+
+### Create a new user [POST]
+
+You may register using your email and a password.
+
++ Attributes (UserCreate)
++ Request (application/json)
+
+
++ Response 201 (application/json)
+
+    + Attributes (CreatedSuccess)
+
+## Users [/users/admin]
+
+### Create a new admin user [POST]
+
+You may create a new admin user as an admin user using a JWT.
+
++ Attributes (UserCreateAdmin)
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer [token]
+
++ Response 201 (application/json)
+
+    + Attributes (CreatedSuccess)
+
+## Get all users with or without a filter [/users{?filter}]
+
+### Get all users [GET]
+
+Gets all users.
+
++ Parameters
+    + filter (optional, string) - The filter object in JSON format. Example: `filter={"limit":2, "offset":0, "where":{"status": 2}, "select":["firstName"],"order":{"createdOn":"ASC"}}`
+
++ Response 200 (application/json) 
+    + Attributes (array[UserResponse])
+
+## Endpoints with parameters [/users/{id}]
+
+### Delete user by ID [DELETE]
+
+Deletes a user by id.
+
++ Parameters
+    + id: `1` (required, number) - User id.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer [token]
+
++ Response 204
+
+### Get a user by ID [GET]
+
+Gets a user by id.
+
++ Parameters
+    + id: `1` (required, number) - User id.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer [token]
+
++ Response 200 (application/json) 
+    + Attributes (UserResponse)
+
+### Update a user by ID [PATCH]
+
+Updates a user by id.
+
++ Parameters
+    + id: `1` (required, number) - User id.
+
++ Attributes(UserEdit)
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer [token]
+
++ Response 204
+
+### Retrieve user profile [GET /users/profile]
+
+Retrieves a user profile using a JWT.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer [token]
+
++ Response 200 (application/json) 
+    + Attributes (UserResponse)
+
+### Update user password [PATCH /users/password-update]
+
+Updates a user password using the JWT provided.
+
++ Attributes(PasswordChange)
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer [token]
+
++ Response 204
+
+### Upload or update a user photo  [PATCH /users/upload/{id}]
+
+Upload a photo to a user by id, it has to be sent under the name of "photo", allowed image types are jpeg, jpg, png and gif.
+
+
++ Parameters
+    + id: `1` (required, number) - Recipe id
+
++ Request (multipart/form-data)
+    + Headers
+
+            Authorization: Bearer [token]
+
++ Response 200 (application/json)
+
+        {
+            "message": "Succesfully uploaded",
+            "url": "http://localhost:3000/api/users/photo/users/d917b131-43e4-443f-a4dd-cb6d78b7693c.jpeg"
+        }
+
 # Data Structures
+
+## CreatedSuccess (object)
++ message: Succesfully created (string) - Response
++ id: 1 (number) - ID of the created resource
 
 ## RecipeBase (object)
 + title: Ramen Soup (string, required) - The title of the recipe.
@@ -172,3 +307,48 @@ Upload a photo to a recipe by id, it has to be sent under the name of "photo", a
 ## IngredientResponse (object)
 + id: 1 (number, required) - The ID of the ingredient.
 + Include IngredientBase
+
+## UserBase (object)
++ firstName: John (string, required) - The first name of the user.
++ lastName: Doe (string, required) - The last name of the user.
++ birthDate: `2023-07-16T03:01:47.134Z` (string, required) - The birth date of the user in ISO 8601 format.
++ email: email@email.com (string, required) - The email address of the user.
+
+## UserCreate (object)
++ Include UserBase
++ password: mypassword123 (string, required) - The password of the user.
+
+## UserCreateAdmin (object)
++ Include UserCreate
++ roleId(RoleUsers) - Role id
+
+## UserEdit (object)
++ Include UserBase
++ status(StatusUser) - Status for the user
++ roleId(RoleUsers) - Role id
+
+## UserResponse (object)
+
++ id: 1 (number) - User id
++ Include UserEdit
++ lastLogin: `2023-08-02T19:09:24.000Z` (string) - Last user's login
++ photo: `photo/users/b6c38194-9b88-43e5-be4d-9363f92f836a.jpeg` (string) - The URL of the recipe photo.
++ lastLogin: `2023-08-02T19:09:24.000Z` (string) - Last user's login
++ createdOn: `2023-08-02T19:09:24.000Z` (string) - Account creation date
+
+## StatusUser (enum)
++ 1 (number) - Active
++ 2 (number) - Inactive
++ 3 (number) - Banned
+
+## StatusRecipe (enum)
++ 1 (number) - Active
++ 2 (number) - Inactive
+
+## RoleUsers (enum)
++ 1 (number) - Administrator
++ 2 (number) - User
+
+## PasswordChange (object)
++ currentPassword: 123456 (string, required) - The current password of the user.
++ newPassword: 1234567 (string, required) - The new password that the user wants to set.
