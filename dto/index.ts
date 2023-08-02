@@ -1,3 +1,4 @@
+export * from './IRoleRequest'
 export * from './EntityType'
 export * from './ICustomRequest'
 export * from './IFileService'
