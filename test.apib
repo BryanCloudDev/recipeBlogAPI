@@ -48,13 +48,6 @@ object containing a recipe title, description, steps and ingredients.
             "id": 1
         }
 
-### Get all recipes [GET]
-
-Gets all recipes.
-
-+ Response 200 (application/json) 
-    + Attributes (array[Recipe])
-
 
 ## Endpoints with parameters [/recipes/{id}]
 
@@ -98,6 +91,18 @@ Deletes a recipe by id.
             Authorization: Bearer [token]
 
 + Response 204
+
+## Get all recipes with or without a filter [/recipes{?filter}]
+
+### Get all recipes [GET]
+
+Gets all recipes.
+
++ Parameters
+    + filter (optional, string) - The filter object in JSON format. Example: `{"limit":2, "offset":0, "where":{"status": 2}, "select":["firstName"],"order":{"createdOn":"ASC"}}`
+
++ Response 200 (application/json) 
+    + Attributes (array[RecipeResponse])
 
 ## Make a search based on text [/recipes/search{?search}]
 
