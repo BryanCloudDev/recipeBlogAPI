@@ -2,7 +2,17 @@ import cors from 'cors'
 import express, { type Application, type Router } from 'express'
 import { type IServerMiddleWare, type IAuthorizationRouter, type IRecipeRouter, type IUserRouter } from '../dto'
 import { AuthorizationRouter, RecipeRouter, UserRouter } from '../routes'
-import { Routes, appFactory, portFactory, routeFactory } from '../services'
+import {
+  RoleService,
+  Roles,
+  Routes,
+  appFactory,
+  createInitialRoles,
+  createMultipleDummyUsers,
+  createMultipleRecipes,
+  portFactory,
+  routeFactory
+} from '../services'
 import { makeDBConnection } from '../database'
 import { ServerMiddleWare } from '../middlewares'
 
@@ -31,6 +41,7 @@ export default class Server {
 
   async connectToDB(): Promise<void> {
     await makeDBConnection()
+    void this.runSeeder()
   }
 
   private middleware(): void {
@@ -53,9 +64,21 @@ export default class Server {
     this._app.use(this.route, this._router)
   }
 
+  public async runSeeder(): Promise<void> {
+    const roleService = new RoleService()
+    const roles = await roleService.getRoleCount()
+
+    if (roles === 0) {
+      await createInitialRoles(['ADMINISTRATOR', 'USER'])
+      await createMultipleDummyUsers(10, Roles.USER)
+      await createMultipleRecipes(100)
+      console.log('Seeders completed!!!')
+    }
+  }
+
   public listener(): void {
     this._app.listen(this._port, () => {
-      console.log(`⚡️[server]: Server is running at http://localhost:${this._port}`)
+      console.log(`⚡️[server]: Server is running at ${process.env.BASE_URL as string}:${this._port}`)
     })
   }
 }

@@ -32,4 +32,8 @@ export class RoleService implements IRoleService {
       throw new Error(LoggerService.errorMessageHandler(error, 'Error in save role').message)
     }
   }
+
+  getRoleCount = async (): Promise<number> => {
+    return await this.repository.role.count()
+  }
 }
