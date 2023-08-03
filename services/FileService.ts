@@ -2,6 +2,7 @@ import { type IURLResponse, type IFileService } from '../dto'
 import fs from 'fs/promises'
 import { __dirname } from './utils'
 import { Routes } from './enums/Routes'
+import { LoggerService } from './LoggerService'
 
 export class FileService implements IFileService {
   public deleteExistingFile = async (pathFile: string): Promise<void> => {
@@ -10,7 +11,7 @@ export class FileService implements IFileService {
         await fs.unlink(`${__dirname}/files/${pathFile}`)
       }
     } catch (error) {
-      console.log(error)
+      LoggerService.errorMessageHandler(error, 'Error in create user controller')
     }
   }
 
