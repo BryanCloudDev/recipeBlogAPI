@@ -8,7 +8,7 @@ import {
   type IFilter,
   type IGetAllItemsResult
 } from '../dto'
-import { type User, type Recipe } from '../models'
+import { type User, type Recipe, type Step, type Ingredient } from '../models'
 import { FileService, IngredientService, LoggerService, StepService, getAllItems } from './'
 import { RecipeRepository } from '../repositories'
 
@@ -24,7 +24,7 @@ export class RecipeService implements IRecipeService {
     this.fileService = _fileService
   }
 
-  public createRecipeInstanceService = (recipeRequest: IRecipeRequest): Recipe => {
+  public createRecipeInstanceService = (recipeRequest: Partial<IRecipeRequest>): Recipe => {
     try {
       const { ingredients, steps, ...recipe } = recipeRequest
 
@@ -32,13 +32,13 @@ export class RecipeService implements IRecipeService {
         ...recipe
       })
 
-      const stepsInstance = steps.map(step => this.stepService.createStepInstanceService(step))
-      const ingredientsInstance = ingredients.map(ingredient =>
+      const stepsInstance = steps?.map(step => this.stepService.createStepInstanceService(step))
+      const ingredientsInstance = ingredients?.map(ingredient =>
         this.ingredientService.createIngredientInstanceService(ingredient)
       )
 
-      userInstance.step = stepsInstance
-      userInstance.ingredient = ingredientsInstance
+      userInstance.step = stepsInstance as Step[]
+      userInstance.ingredient = ingredientsInstance as Ingredient[]
 
       return userInstance
     } catch (error: any) {
