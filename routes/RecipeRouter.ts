@@ -45,7 +45,7 @@ export class RecipeRouter implements IRecipeRouter {
       '/',
       [
         this.recipeMiddleWare.authenticationMiddleware.validateJWT,
-        this.recipeMiddleWare.authenticationMiddleware.validateRole([Roles.ADMIN]),
+        this.recipeMiddleWare.authenticationMiddleware.validateRole([Roles.ADMIN, Roles.USER]),
         checkExact([...this.recipeValidations], { message: 'Too many fields specified' }),
         validateFields
       ],
@@ -62,7 +62,7 @@ export class RecipeRouter implements IRecipeRouter {
       '/:id',
       [
         this.recipeMiddleWare.authenticationMiddleware.validateJWT,
-        this.recipeMiddleWare.authenticationMiddleware.validateRole([Roles.ADMIN]),
+        this.recipeMiddleWare.authenticationMiddleware.validateRole([Roles.ADMIN, Roles.USER]),
         param('id', 'Recipe id must be an integer').isNumeric(),
         validateFields,
         this.recipeMiddleWare.validateRecipeId,
@@ -98,7 +98,7 @@ export class RecipeRouter implements IRecipeRouter {
       '/:id',
       [
         this.recipeMiddleWare.authenticationMiddleware.validateJWT,
-        this.recipeMiddleWare.authenticationMiddleware.validateRole([Roles.ADMIN]),
+        this.recipeMiddleWare.authenticationMiddleware.validateRole([Roles.ADMIN, Roles.USER]),
         param('id', 'Recipe id must be an integer').isNumeric(),
         checkExact([...this.recipeValidations.map(validation => validation.optional())], {
           message: 'Too many fields specified'
@@ -115,7 +115,7 @@ export class RecipeRouter implements IRecipeRouter {
       '/upload/:id',
       [
         this.recipeMiddleWare.authenticationMiddleware.validateJWT,
-        this.recipeMiddleWare.authenticationMiddleware.validateRole([Roles.ADMIN]),
+        this.recipeMiddleWare.authenticationMiddleware.validateRole([Roles.ADMIN, Roles.USER]),
         param('id', 'Recipe id must be an integer').isNumeric(),
         validateFields,
         this.recipeMiddleWare.validateRecipeId,
