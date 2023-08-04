@@ -1,6 +1,6 @@
 # Recipe Blog API
 
-I improved this project using Express, it was previously made using PHP while I was studying programming, I applied clean code and SOLID principles to this project.
+I improved this project using Express. It was previously made using PHP while I was studying programming. I applied clean code and SOLID principles to this project.
 
 ## Table of contents
 
@@ -18,17 +18,17 @@ I improved this project using Express, it was previously made using PHP while I 
 
 #### Non-authenticated actions
 
-Actions that do not require authentication are view recipe information and register with their email address, get a recipe by id, get a photo for a recipe, search for a recipe by the title.
+Actions that do not require authentication are viewing recipe information and registering with their email address, getting a recipe by id, getting a photo for a recipe, and searching for a recipe by the title.
 
 #### Authenticated actions
 
-Regular users should be able to:
+- Regular users should be able to:
 
-- Same actions as above plus create, edit, delete recipes, retrieve their profile information by the JWT, get a photo for a user, update their password and add or edit the photo of a recipe and personal profile.
+Same actions as above, plus create, edit, delete recipes, retrieve their profile information by the JWT, get a photo for a user, update their password, and add or edit the photo of a recipe and personal profile.
 
-Admin users should be able to:
+- Admin users should be able to:
 
-- Same actions as above plus register new admin users, view users in the platform, get a user by id, update, delete and ban users.
+Same actions as above, plus register new admin users, view users in the platform, get a user by id, update, delete, and ban users.
 
 ## My process
 
@@ -43,11 +43,11 @@ Admin users should be able to:
 
 ### What I learned
 
-While building this API, I gained valuable experience in structuring the architecture of an API effectively. I learned how to work with classes and SOLID principles, I learned also how to preoperly storage files and access them on the server by exposing a public folder with the files on it. Additionally, I became proficient in documenting APIs using API Blueprint with the [MSON](https://apiblueprint.org/documentation/mson/tutorial.html) format. I explored the usage of middlewares and custom requests to optimize data loading. I improved a lot the structure and resposabilities for each class in order to maje it as manitable and clear as possible.
+While building this API, I gained valuable experience in structuring the architecture of an API effectively. I learned how to work with classes and SOLID principles. I also learned how to properly store files and access them on the server by exposing a public folder with the files in it. Additionally, I became proficient in documenting APIs using API Blueprint with the [MSON](https://apiblueprint.org/documentation/mson/tutorial.html) format. I explored the usage of middlewares and custom requests to optimize data loading. I improved a lot the structure and responsibilities for each class to make it as maintainable and clear as possible.
 
 ### Continued development
 
-I will continue enhancing my skills as a backend developer and strive to become an expert in design patterns, enabling me to design even better API's and systems.
+I will continue enhancing my skills as a backend developer and strive to become an expert in design patterns, enabling me to design even better APIs and systems.
 
 ## Installation
 
@@ -87,7 +87,7 @@ npm install
 
 By running this command, the necessary dependencies to run the project will be installed. In addition to the necessary dependencies, this command will install development dependencies as well.
 
-Now, I have provided a file named .env.example. Inside that file, you will find some environment variables. You need to create a MySQL database named 'recipe_blog'. After that's done, you can create a new file named '.env', make sure to fill in the missing variable values in the .env file inorder for the project to work.
+Now, I have provided a file named .env.example. Inside that file, you will find some environment variables. You need to create a MySQL database named 'recipe_blog'. After that's done, you can create a new file named '.env', make sure to fill in the missing variable values in the .env file in order for the project to work.
 
 After all dependencies have been installed, you can run the following command:
 
@@ -107,22 +107,22 @@ You can also run it in a development mode using the following command:
 npm run dev
 ```
 
-It will log messages from errors in the console if required using the changes you may make to the TypeScript code.
+It will log messages from errors to the console if required, using the changes you may make to the TypeScript code.
 
-This will start a new server where you can see the app running on port 3000 or the port of your choice. You can modify the port as needed. By starting the application it will pre-fill the datbase with some seeders created. Please note that this will be done when the database is empty, so the very first time.
+This will start a new server where you can see the app running on port 3000 or the port of your choice. You can modify the port as needed. By starting the application, it will pre-fill the database with some seeders created. Please note that this will be done only when the database is empty, so it will happen only the very first time.
 
-The admin user is automatically added for you to login as an admin user, the credentials are:
+The admin user is automatically added for you to login as an admin user. The credentials are:
 
 ```
 email: example@example.com
 password: secretpassword
 ```
 
-You can go from there to login and create admin and regular users and access their endpoints respectively provided in the [postman collection](https://gist.github.com/BryanCloudDev/a20b4fdb32fe37a2d76620f65b2edcfb), in there it is very detailed how to access every endpoint.
+You can go from there to log in and create admin and regular users and access their respective endpoints, as provided in the [postman collection](https://gist.github.com/BryanCloudDev/a20b4fdb32fe37a2d76620f65b2edcfb). The collection includes detailed instructions on how to access every endpoint.
 
-You can also check the API specification created in Apiary using API Blueprint for this api [here](https://blogrecipe.docs.apiary.io/)
+You can also check the API specification created in Apiary using API Blueprint for this project [here](https://blogrecipe.docs.apiary.io/).
 
-I will continue expading this project, thank you for takig the time to check it :D.
+I will continue expanding this project. Thank you for taking the time to check it! :D.
 
 ## Author
 
